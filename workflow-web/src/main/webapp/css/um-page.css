@@ -1,0 +1,419 @@
+/**
+	@author liuwanbin
+	@time 15-8-5
+	@description table.css,button.css
+*/
+.table-wrapper{
+	width:100%;
+	position:relative;
+	clear:both;
+	zoom:1;
+}
+.table-wrapper-down{
+	width:100%;
+	position:relative;
+	top:40px;
+	clear:both;
+	zoom:1;
+}
+.table-request{
+	width:100%;
+	position:relative;
+	top:30px;
+	clear:both;
+	zoom:1;
+}
+.table-request-down{
+	width:100%;
+	position:relative;
+	top:60px;
+	zoom:1;
+}
+.table-down{
+	width:100%;
+	position:relative;
+	top:30px;
+	clear:both;
+	zoom:1;
+}
+.table-down-text{
+	width:100%;
+	position:relative;
+	top:40px;
+	clear:both;
+	zoom:1;
+}
+.table-page-down{
+	width:100%;
+	position:relative;
+	top:50px;
+	clear:both;
+	zoom:1;
+}
+.table-wrapper-logDown{
+	width:100%;
+	position:relative;
+	top:20px;
+	clear:both;
+	zoom:1;
+}
+table.um-table{
+	width:100%;
+	margin:0 auto;
+	border-collapse:collapse;
+	border-spacing:0;
+	border:1px solid #b8b9b9;
+}
+table.um-table tr th{
+	height:30px;
+	line-height:30px;
+	background:#e8f2f5;
+	border:1px solid #bfd8e0;
+	color:#075587;
+	text-align:center;
+	font-weight:bold;
+}
+table.um-table tr td{
+	height:26px;
+	line-height:26px;	
+	border:1px solid #bfd8e0;
+	color:#3d7aa1;
+	text-align:center;
+}
+table.um-table tbody tr{
+	background:#fff;
+}
+table.um-table tbody tr.odd{
+	background:#f5ffef;
+}
+.um-s-box{
+	width:98%;
+	padding:10px;
+	overflow:hidden;
+	float:left;
+	border:2px solid #fff;
+}
+.um-span{
+	width:21%;
+	height:27px;
+	line-height:30px;
+	float:left;
+	 
+}
+.um-span-right{
+	position:absolute;
+	left:85%;
+	top:10px;
+	width:13%;
+	height:30px;
+	z-index:1;
+}
+.um-span-rightHis{
+	position:absolute;
+	left:80%;
+	top:10px;
+	width:13%;
+	height:30px;
+	z-index:1;
+}
+.um-span-his{
+	position:absolute;
+	left:90%;
+	top:10px;
+	width:13%;
+	height:30px;
+	z-index:1;
+}
+.um-images-right{
+	position:absolute;
+	left:84%;
+	top:4px;
+	width:25%;
+	height:30px;
+	z-index:1;
+}
+
+.um-span-left{
+	position:absolute;
+	left:0;
+	top:10px;
+	width:25%;
+	height:30px;
+	z-index:1;
+}
+.um-span-down{
+	position:absolute;
+	left:55%;
+	top:80px;
+	width:25%;
+	height:30px;
+	z-index:1;
+}
+.um-span-center{
+	position:absolute;
+	left:40%;
+	top:50px;
+	width:50%;
+	height:50px;
+	z-index:1;
+}
+.um-span-request-center{
+	position:absolute;
+	left:40%;
+	top:1px;
+	z-index:1;
+}
+.um-span-centerDown{
+	position:absolute;
+	left:40%;
+	top:100px;
+	width:50%;
+	height:50px;
+	z-index:1;
+}
+.um-span label{
+	width:45%;
+	height:23px;
+	line-height:23px;
+	float:left;
+	text-align:right;
+}
+
+.um-btn{
+	background:#1c8ecc;
+	padding:2px 9px;
+	border-radius:2px;
+	vertical-align:middle;
+	color:#fff;
+	border:0;
+	overflow:visible;
+	cursor:pointer;
+	margin:1px 3px 0; 
+}
+.um-btn-update{
+	position:absolute;
+	left:55%;
+	top:80%;
+	background:#1c8ecc;
+	padding:2px 9px;
+	border-radius:2px;
+	vertical-align:middle;
+	color:#fff;
+	border:0;
+	overflow:visible;
+	cursor:pointer;
+	margin:1px 3px 0; 
+}
+
+.um-input{
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;	
+	width:50%;
+	margin-left:4px;
+}
+.um-input-request{
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;	
+	width:30%;
+	margin-left:4px;
+}
+.um-inputsus{
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;	
+	width:40%;
+	margin-left:1px;
+}
+.um-select{
+	width:15%;
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;
+	margin-left:4px;
+}
+.um-select-pageSize{
+	width:5%;
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;
+	margin-left:4px;
+}
+.um-table-page{
+	float:right;
+	margin-top:5px;
+	text-align:right;
+	width:100%;
+}
+.um-table-page-down{
+	float:right;
+	margin-top:10px;
+	text-align:right;
+	width:100%;
+}
+.um-page-btn{
+	background:#ddeef6;
+	padding:1px 6px;
+	color:#075587;
+	text-align:center;
+	border:0;
+	border-radius:2px;
+	cursor:pointer;
+	float:left;
+	margin-left:5px;
+}
+
+/**
+	description: dialog.css
+*/
+.dialog-box{
+	width:100%;
+}
+.dialog-box .d-span{
+	margin-top:10px;
+	clear:both;
+	overflow:hidden;
+	display:block;
+}
+.request-clear{
+	margin-top:10px;
+	clear:both;
+	overflow:hidden;
+	display:block;
+}
+.dialog-box .d-span label{
+	width:40%;
+	height:26px;
+	line-height:26px;
+	text-align:right;
+	float:left;
+}
+.dialog-box .d-span .d-input{
+	width:50%;
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;
+	margin-left:4px;
+}
+.um-s-updateRuleRight{
+	position:absolute;
+	left:50%;
+	top:10px;
+	width:50%;
+	height:50px;
+	z-index:1;
+}
+.um-s-updateRuleLeft{
+	position:absolute;
+	top:40px;
+	width:50%;
+	height:50px;
+	z-index:1;
+}
+.um-s-request-left{
+	position:absolute;
+	left:20%;
+	top:40px;
+	width:50%;
+	height:50px;
+	z-index:1;
+}
+.um-s-request-center{
+	position:absolute;
+	left:20%;
+	top:40px;
+	width:20%;
+	z-index:1;
+}
+.um-s-request-right{
+	position:absolute;
+	left:80%;
+	top:40px;
+	width:50%;
+	height:50px;
+	z-index:1;
+}
+
+.dialog-box .user-span{
+	margin-top:10px;
+	clear:both;
+	overflow:hidden;
+	display:block;
+}
+.seluser-input{
+	border:1px solid #bfd8e0;
+	height:23px;
+	line-height:23px;	
+	width:30%;
+	margin-left:4px;
+}
+.mydiv {
+	background-color: #F8F8FF;
+	border: 6px solid #BCD2EE;
+	text-align: center;
+	line-height: 40px;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 99;
+	width: 500px;
+	height: 300px;
+	left: 40%;
+	/*FF IE7*/
+	top: 20%;
+	/*FF IE7*/
+	margin-left: -150px!important;
+	/*FF IE7 ��ֵΪ������һ��*/
+	margin-top: -60px!important;
+	/*FF IE7 ��ֵΪ����ߵ�һ��*/
+	margin-top: 0px;
+	position: fixed!important;
+	/*FF IE7*/
+	position: absolute;
+	/*IE6*/
+	_top: expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 : 
+/*IE6*/
+	document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2);
+	/*IE5 IE5.5*/
+	
+}
+.grid1_of_4{
+	float: left;
+	width: 28%;
+	margin-left: 1%;
+}
+.grid1_of_4:first-child{
+	margin-left: 0;
+}
+.grid1_of_4 h4 {
+	font-size:16px;
+	margin-top:5px;
+}
+.grid1_of_4 h4 a{
+	text-transform:uppercase;
+	color:#000000;
+}
+.grid1_of_4 p{
+	font-size: 0.8125em;
+	color:#777777;
+	line-height: 1.5em;
+	margin-bottom: 10px;
+}
+
+.query-btn{
+	background:#1c8ecc;
+	padding:2px 9px;
+	border-radius:2px;
+	vertical-align:middle;
+	color:#fff;
+	border:0;
+	overflow:visible;
+	cursor:pointer;
+	margin-left: 10px;
+	margin-bottom: 5px;
+}
+.text-textarea{
+height:200px;
+padding: 5px 0px 0px 5px;
+width: 99%;
+}

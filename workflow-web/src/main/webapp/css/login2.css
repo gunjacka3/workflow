@@ -1,0 +1,21 @@
+body{
+	  background:#f2f2f2;
+	  background-image: url('../images/back.jpg');
+	  background-repeat:no-repeat;
+	  background-position: center;
+	  background-attachment: fixed;
+	  border-radius: 6px;
+	  -webkit-border-radius: 6px;
+	  -moz-border-radius: 6px;
+	  padding-top:20px; 
+}
+.login{
+	width:400px;
+	border-radius:4px;
+	background:#EBE4DA;
+	box-shadow:6px 6px 10px #ccc;
+	margin:25% 10% 1% 60%;
+	padding: 25px 10px 15px 10px;
+  	position:absolute;
+}
+

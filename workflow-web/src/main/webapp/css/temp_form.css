@@ -1,0 +1,18 @@
+.bootstrap-frm {
+margin-left:auto;
+margin-right:auto;
+max-width: 1000px;
+background: #FFF;
+padding: 20px 10px 20px 10px;
+text-shadow: 1px 1px 1px #FFF;
+border:1px solid #DDD;
+border-radius: 5px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+}
+
+.bootstrap-frm textarea{
+height:100px;
+padding: 5px 0px 0px 5px;
+width: 40%;
+}

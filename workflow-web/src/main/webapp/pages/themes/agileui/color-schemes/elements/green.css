@@ -1,0 +1,665 @@
+	/* jQuery Styles */
+
+.font-default,
+.heading-1 {
+	color: #666;
+}
+
+#page-header a:hover, #header-logo a:hover  {
+	color: #1b6900;
+}
+
+.ui-state-default, 
+.ui-tabs-nav, 
+.ui-accordion-header,
+.table th,
+.ui-dialog-titlebar,
+.ui-datepicker-header,
+.ui-slider .ui-slider-range,
+.chosen-container .chosen-single,
+.chosen-container.chosen-disabled .chosen-single:hover,
+.selector, 
+.selector.disabled:hover,
+a.btn.ui-state-default.disabled:hover,
+button.btn.ui-state-default[disabled]:hover,
+.ui-button.ui-state-default.ui-state-disabled:hover {
+	border: #ddd solid 1px;
+	background: #f3f3f3;
+	color: #666;
+}
+
+.timeline-box:before {
+	background: #ddd;
+}
+
+.ui-tabs, 
+.ui-accordion, 
+.table,
+.content-box-alt,
+.ui-dialog,
+.ui-datepicker,
+.chosen-drop {
+	background: #fff;
+	border: #ddd solid 1px;
+	position: relative;
+}
+
+.ui-tabs-nav, 
+.ui-accordion-header, 
+.table th,
+.ui-dialog-titlebar,
+.ui-datepicker-header {
+	border: 0;
+	border-bottom: #ddd solid 1px;
+}
+
+.ui-tabs-nav.tabs-bottom {
+	border-bottom: 0;
+	border-top: #ddd solid 1px;
+}
+
+.ui-tabs-nav, .ui-tabs-nav > li, .ui-tabs-nav > li > a, 
+.ui-accordion-header,
+.content-box-header,
+.content-box-header > .icon-separator,
+.ui-dialog-titlebar,
+.ui-datepicker-header,
+.ui-datepicker .ui-datepicker-title {
+	height: 38px;
+	line-height: 38px;
+}
+
+.content-box-header > .icon-separator {
+	width: 38px;
+}
+
+.content-box-header {
+	line-height: 37px;
+}
+
+#page-header .notifications-box li {
+	padding: 5px;
+	font-size: 11px;
+}
+
+.ui-tabs-nav > li > a, 
+.ui-accordion-header, 
+.ui-dialog-titlebar,
+.ui-datepicker-header,
+.chosen-container .chosen-single,
+.selector span,
+.selector i,
+.selector.disabled:hover i, 
+.content-box-header.ui-state-default {
+	color: #666;
+	padding: 0 20px;
+}
+
+.nav-list li a, 
+.nav-list-horizontal li a, 
+.nav-list-horizontal li .nav-wrp, 
+.content-box, 
+.content-box-header, 
+.ui-datepicker, 
+.content-box.drop-shadow .content-box-header, 
+.ui-accordion, 
+.ui-dialog, 
+.ui-accordion-content {
+	border-color: #ddd;
+}
+
+.content-box.border-top {
+	border-left-color: #ddd !important;
+	border-right-color: #ddd !important;
+	border-bottom-color: #ddd !important;
+}
+
+
+
+.ui-tabs-nav > li {
+	border: 0;
+	border-left: rgba(255,255,255,0.5) solid 1px;
+	border-right: #ddd solid 1px;
+}
+
+.ui-tabs-nav > li.float-right {
+	border: 0;
+	border-left: #ddd solid 1px;
+	border-right: rgba(255,255,255,0.5) solid 1px;
+}
+
+.ui-tabs-nav > li:last-child a {
+	border-right: rgba(255,255,255,0.5) solid 1px;
+}
+
+.ui-tabs-nav > li.float-right:last-child > a {
+	border-left: rgba(255,255,255,0.5) solid 1px;
+	border-right: 0;
+}
+
+.ui-tabs-nav > li > a:hover,
+.ui-tabs-nav .dropdown.open > a.dropdown-toggle, 
+.ui-accordion-header.ui-state-hover,
+.chosen-container .chosen-single:hover,
+.selector:hover {
+	background: #fafafa;
+	cursor: pointer;
+}
+
+.ui-tabs-nav .dropdown.open > a.dropdown-toggle, 
+.ui-accordion-header.ui-state-hover,
+.chosen-container .chosen-single:hover,
+.selector:hover,
+.selector:hover i {
+	color: #000;
+}
+
+.ui-tabs-nav > li > a:hover {
+	color: #fff;
+}
+
+.ui-tabs-nav > li.ui-state-active, .ui-tabs-nav > li.ui-state-active > a:hover, 
+.ui-accordion-header-active, .ui-accordion-header-active.ui-state-hover:hover {
+	background: #fff;
+}
+
+.ui-tabs-nav > li.ui-tabs-active {
+	margin-bottom: -1px;
+	padding-bottom: 1px;
+}
+
+.ui-tabs-nav.tabs-bottom > li.ui-tabs-active {
+	margin-top: -1px;
+	padding-top: 1px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.ui-accordion-content {
+	border-bottom: #ddd solid 1px;
+}
+
+	/* Tables */
+
+.table td, 
+.table th {
+	border-right: #ddd solid 1px;
+	border-bottom: #ddd solid 1px;
+}
+
+.table tfoot td, 
+.table tfoot th {
+	border-top: #ddd solid 1px;
+}
+
+	/* Shadows */
+
+.content-box-header {
+	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+a.btn.ui-state-default.disabled,
+button.btn.ui-state-default.disabled,
+a.btn.disabled,
+button.btn[disabled],
+.ui-button.ui-state-default.ui-state-disabled,
+.ui-datepicker-prev.ui-state-disabled,
+.ui-datepicker-current.ui-priority-secondary {
+	box-shadow: inset 0 0 0 120px rgba(255, 255, 255, 0.12) !important;
+}
+
+a.btn:hover, button.btn:hover, 
+a.ui-button:hover, button.ui-button:hover, .ui-button.active,
+.btn.primary-bg.ui-state-default:hover, 
+.ui-datepicker-prev:hover,
+.ui-datepicker-next:hover,
+.ui-datepicker-buttonpane button:hover,
+.ui-slider .ui-slider-handle:hover,
+.ui-slider .ui-slider-handle.ui-state-focus,
+.ui-dialog-buttonpane .ui-button.ui-state-default:hover {
+	box-shadow: inset 0 0 0 120px rgba(255, 255, 255, 0.12);
+	color:#fff;
+}
+
+a.btn.ui-state-default:hover,
+button.btn.ui-state-default:hover,
+a.ui-button.ui-state-default:hover,
+button.ui-button.ui-state-default:hover,
+a.btn.bg-gray:hover,
+button.btn.bg-gray:hover,
+a.btn.bg-gray-alt:hover,
+button.btn.bg-gray-alt:hover {
+	box-shadow: inset 0 0 0 120px rgba(255, 255, 255, 0.4);
+	color: #000;
+	cursor: pointer;
+}
+
+a.btn:active, button.btn:active,
+a.ui-button:active, button.ui-button:active,
+.btn.primary-bg.ui-state-default:active, 
+.ui-datepicker-prev:active,
+.ui-datepicker-next:active,
+.ui-datepicker-buttonpane button:active,
+.dropdown-menu li a:active,
+a.btn.ui-state-default:active,
+button.btn.ui-state-default:active,
+a.btn.bg-gray:active,
+button.btn.bg-gray:active,
+.ui-dialog-buttonpane .ui-button.ui-state-default:active {
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+a.btn.ui-state-default:active,
+button.btn.ui-state-default:active {
+	border-color: #8fa0b4;
+}
+
+.icon-separator {
+	background: rgba(255,255,255,0.2);
+	border-right: rgba(0,0,0,0.3) solid 1px;
+	box-shadow: inset -1px 0 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.icon-separator.float-right {
+	border-right: 0;
+	border-left: rgba(0,0,0,0.3) solid 1px;
+	box-shadow: inset 1px 0 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.content-box-header.ui-state-default > .icon-separator {
+	background: rgba(255,255,255,0.5);
+}
+
+.drop-shadow {
+	border-color: #bbb;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.drop-shadow-alt, 
+.dropdown-menu, 
+#pNav .dropdown-menu, 
+.popover, 
+.ui-dialog,
+.ui-datepicker,
+.chosen-drop,
+.ui-menu, 
+.minicolors-panel {
+	border-color: #b8b8b8;
+	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+	/* Common Theme Color */
+
+.dropdown-menu li a:hover,
+.dropdown-menu li a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a,
+.primary-bg,
+.ui-datepicker-prev,
+.ui-datepicker-next,
+.ui-datepicker td .ui-state-hover,
+.ui-datepicker-buttonpane button,
+.ui-slider .ui-slider-handle,
+.chosen-results li.highlighted,
+.form-wizard > ul > li a.selected:before, 
+.wizard-step, 
+.ui-menu li a:hover,
+.ui-menu li a:focus,
+.ui-spinner-button, 
+.ui-dialog-buttonpane .ui-button, 
+.ms-container .ms-selectable li.ms-hover,
+.ms-container .ms-selection li.ms-hover {
+	background: #269100;
+	border-color: #1b6900;
+	color: #fff !important;
+}
+
+.ui-datepicker-current-day a, 
+.ui-datepicker-current-day a.ui-state-hover {
+	background: #fff;
+	border-color: #1b6900;
+	color: #303b49 !important;
+	font-weight: bold;
+}
+
+.ui-datepicker-today a, 
+.ui-datepicker-today a.ui-state-hover {
+	background: #ffeec6;
+	border-color: #1b6900;
+	color: #000 !important;
+	font-weight: bold;
+}
+
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover,
+.dropdown-menu .active > a:focus {
+	background: #303b49;
+}
+
+.fColTh,
+#pNav li.nav-active > a, 
+.ui-tabs-nav li.ui-state-active a, 
+.ui-accordion-header-active, 
+.ui-accordion-header-active:hover,
+.checker span.checked i, 
+.radio span.checked i {
+	color: #303b49;
+}
+
+.button-pane,
+.ui-dialog .ui-dialog-buttonpane,
+.ui-datepicker-buttonpane {
+	background: #f9fcff;
+	border: #ddd solid 1px;
+	padding: 10px;
+}
+
+a,
+.no-shadow.btn {
+	color: #0067be;
+}
+
+a:hover, 
+a.no-shadow.btn:hover,
+button.no-shadow.btn:hover {
+	color: #004d8e;
+}
+
+.btn,
+.ui-button,
+.icon-separator, 
+.ui-tabs, 
+.ui-accordion, 
+.ui-dialog,
+.ui-dialog-titlebar-close,
+.ui-datepicker,
+.ui-datepicker-prev,
+.ui-datepicker-next,
+.ui-datepicker-buttonpane button,
+.jGrowl-notification,
+.input, 
+.form-input input,
+.form-input textarea,
+.dropdown-menu, 
+.popover, 
+.minicolors-panel, 
+.dropdown-menu li a,
+.chosen-container,
+.chosen-choices li.search-choice,
+.chosen-single,
+.chosen-choices,
+.chosen-results li.highlighted,
+.ui-menu li a,
+.selector,
+.content-box,
+.content-box-closed, 
+.content-box-closed .content-box-header, 
+.form-input-icon .glyph-icon,
+#sidebar-menu li a,
+.content-box .ui-widget-overlay.loader,
+.bootstrap-timepicker-widget table td input,
+.button-pane,
+.infobox, 
+.icon-separator-vertical,
+.table-rounded, 
+.info-box-alt, 
+.notifications-box, 
+.ui-toolbar select, 
+.ui-toolbar input {
+	border-radius: 3px;
+}
+
+.ui-dialog .ui-dialog-titlebar,
+.ui-datepicker-header,
+.content-box .content-box-header,
+.ui-tabs-nav,
+.ui-accordion-header:first-child,
+.button-group-vertical > .btn:first-child, 
+.notifications-box li:first-child {
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+}
+
+.ui-tabs-nav.tabs-bottom {
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.ui-tabs-nav li:first-child, 
+.table-rounded thead tr:first-child th:first-child,
+.table-rounded thead tr:first-child td:first-child {
+	border-top-left-radius: 3px;
+}
+
+.ui-tabs-nav.tabs-bottom li:first-child {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 3px;
+}
+
+.ui-tabs-nav li.float-right:not(:last-child), 
+.table-rounded thead tr:first-child th:last-child,
+.table-rounded thead tr:first-child td:last-child {
+	border-top-right-radius: 3px;
+}
+
+.ui-tabs-nav.tabs-bottom li.float-right:not(:last-child) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 3px;
+}
+
+.table-rounded tbody tr:last-child th:last-child,
+.table-rounded tbody tr:last-child td:last-child {
+	border-bottom-right-radius: 3px;
+}
+
+.table-rounded tbody tr:last-child th:first-child,
+.table-rounded tbody tr:last-child td:first-child {
+	border-bottom-left-radius: 3px;
+}
+
+.ui-dialog .ui-dialog-buttonpane,
+.ui-datepicker-buttonpane,
+.chosen-drop,
+.chosen-results li.no-results,
+.ui-menu,
+.content-box .content-box-wrapper,
+.ui-accordion-header:last-of-type,
+.button-group-vertical > .btn:last-of-type, 
+.info-box, 
+#sidebar-menu li ul, 
+#sidebar-menu li ul li:last-child a, 
+.notifications-box li:last-child {
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;	
+}
+
+.input-append-wrapper .input-append {
+	border-radius: 0;
+
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+.input-append-right .input-append {
+	border-radius: 0;
+
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.button-group .btn:last-of-type,
+.button-group .btn:last-of-type .icon-separator,  
+.icon-separator.float-right {
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+.ui-spinner-down {
+	border-bottom-right-radius: 3px !important;
+	border-bottom-left-radius: 0;
+}
+
+
+.btn.tile-button.bg-white {
+	border: #ccc solid 1px;
+}
+
+.ms-container .ms-list {
+	border-color: #CDCDCD;
+}
+.ms-container .ms-list {
+	background: #FFF;
+	border: #CDCDCD solid 1px;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.content-box-header .icon-separator.transparent {
+	min-width: 10px;
+	margin-right: 10px;
+}
+
+a.btn.icon-separator.transparent:hover {
+	-moz-opacity: 0.60;
+	filter: alpha(opacity:60);
+	opacity: 0.60;
+	color: #fff;
+}
+
+.icon-separator {
+	color: #fff;
+}
+
+a.btn.active, 
+button.btn.active, 
+a.active.btn.bg-gray, 
+button.active.btn.bg-gray, 
+a.active.btn.bg-gray-alt, 
+button.active.btn.bg-gray-alt {
+	box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.05), inset 0 2px 5px 0 rgba(0, 0, 0, 0.07);
+}
+
+.content-box-header.bg-gray > .ui-tabs-nav li > a, 
+.content-box-header.ui-state-default > .ui-tabs-nav li > a,
+.content-box-header.bg-gray-alt > .ui-tabs-nav li > a, 
+.content-box-header.bg-white > .ui-tabs-nav li > a, 
+
+.content-box-header.bg-gray .icon-separator, 
+.content-box-header.ui-state-default .icon-separator,
+.content-box-header.bg-gray-alt .icon-separator, 
+.content-box-header.bg-white .icon-separator, 
+
+.btn.bg-gray .icon-separator, 
+.btn.ui-state-default .icon-separator,
+.btn.bg-gray-alt .icon-separator, 
+.btn.bg-white .icon-separator {
+	color: #7d7d7d;
+}
+
+.content-box-header.bg-gray > .ui-tabs-nav li > a:hover, 
+.content-box-header.ui-state-default > .ui-tabs-nav li > a:hover,
+.content-box-header.bg-gray-alt > .ui-tabs-nav li > a:hover, 
+.content-box-header.bg-white > .ui-tabs-nav li > a:hover, 
+
+.btn.bg-gray:hover .icon-separator, 
+.btn.ui-state-default:hover .icon-separator,
+.btn.bg-gray-alt:hover .icon-separator, 
+.btn.bg-white:hover .icon-separator, 
+.content-box-header.ui-state-default a.icon-separator:hover {
+	color: #333;
+}
+
+.content-box-header.bg-gray > .icon-separator.remove-bg, 
+.content-box-header.ui-state-default > .icon-separator.remove-bg, 
+.content-box-header.bg-gray-alt > .icon-separator.remove-bg, 
+.content-box-header.bg-white > .icon-separator.remove-bg {
+	color: #666;
+}
+
+.content-box-header.bg-white > .ui-tabs-nav li.ui-tabs-active > a {
+	background: #DDD;
+}
+
+.content-box.ui-tabs > .content-box-header.bg-gray, 
+.content-box.ui-tabs > .content-box-header.ui-state-default, 
+.content-box.ui-tabs > .content-box-header.bg-gray-alt, 
+.content-box.ui-tabs > .content-box-header.bg-white {
+	margin: 0;
+}
+
+	/* Charts */
+
+.xchart .color0 .line {
+  stroke: #269100;
+}
+
+.xchart .color0 circle {
+  stroke: #269100;
+}
+
+.xchart .color0 .line .fill {
+  pointer-events: none;
+}
+
+.xchart .color0 rect {
+	fill: #269100;
+}
+
+.xchart .color0 circle {
+  fill: #fff;
+}
+
+.xchart .color0 .fill {
+  fill: rgba(250, 119, 83, 0.05);
+}
+.xchart .color0.comp .line {
+  stroke: #269100;
+}
+.xchart .color0.comp rect {
+  fill: #269100;
+}
+.xchart .color0.comp .fill {
+  display: none;
+}
+.xchart .color0.comp circle,
+.xchart .color0.comp .pointer {
+  fill: #269100;
+}
+
+.xchart .color1 .line {
+  stroke: #f3f3f3;
+}
+
+.xchart .color1 circle {
+  stroke: #f3f3f3;
+}
+
+.xchart .color1 .line .fill {
+  pointer-events: none;
+}
+
+.xchart .color1 rect {
+	fill: #f3f3f3;
+}
+
+.xchart .color1 circle {
+  fill: #fff;
+}
+
+.xchart .color1 .fill {
+  fill: rgba(35, 129, 233, 0.05);
+}
+.xchart .color1.comp .line {
+  stroke: #f3f3f3;
+}
+.xchart .color1.comp rect {
+  fill: #f3f3f3;
+}
+.xchart .color1.comp .fill {
+  display: none;
+}
+.xchart .color1.comp circle,
+.xchart .color1.comp .pointer {
+  fill: #f3f3f3;
+}

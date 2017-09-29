@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!-- status=debug 可以查看log4j的装配过程 -->  
+<configuration status="off" monitorInterval="1800">  
+    <properties>  
+        <property name="LOG_HOME">${sys:catalina.home}/logs</property>  
+        <!-- 日志备份目录 -->  
+        <property name="BACKUP_HOME">{LOG_HOME}/backup</property>  
+        <property name="STAT_NAME">stat</property>  
+        <property name="SERVER_NAME">global</property>  
+    </properties>  
+    <appenders>  
+        <!-- 定义控制台输出 -->  
+        <Console name="Console" target="SYSTEM_OUT" follow="true">  
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%C:%line] - %msg%n" />  
+        </Console>  
+        <!-- workflow平台日志 -->  
+        <RollingRandomAccessFile name="workFlowLog" fileName="${LOG_HOME}/workflow.log"  immediateFlush="true" bufferSize="16384"
+            filePattern="${LOG_HOME}/$${date:yyyy-MM}/%d{dd}/workflow/%i.log.gz">  
+			<Filters>
+				<ThresholdFilter level="DEBUG"/>
+			</Filters>
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %X{userId} - %msg%n" />  
+			<Policies>
+        		<TimeBasedTriggeringPolicy />
+        		<SizeBasedTriggeringPolicy size="100 MB"/>
+      		</Policies>
+        </RollingRandomAccessFile>  
+        <!-- 流程引擎日志 -->  
+        <RollingRandomAccessFile name="activitiLog" fileName="${LOG_HOME}/activiti.log"  immediateFlush="true" bufferSize="16384"
+            filePattern="${LOG_HOME}/$${date:yyyy-MM}/%d{dd}/activiti/%i.log.gz">  
+			<Filters>
+				<ThresholdFilter level="DEBUG"/>
+			</Filters>
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />  
+			<Policies>
+        		<TimeBasedTriggeringPolicy />
+        		<SizeBasedTriggeringPolicy size="100 MB"/>
+      		</Policies>
+        </RollingRandomAccessFile> 
+		<RollingRandomAccessFile name="errorLog" fileName="${LOG_HOME}/workflow_error.log"
+			immediateFlush="${log4j2.imflu}" bufferSize="16384" filePattern="${sys:catalina.home}/logs/$${date:yyyy-MM}/%d{dd}/error/%i.log.gz">
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout pattern="%d{DEFAULT} [%thread] %p %C{10} %L %M %m%n%ex" />
+			<Policies>
+        		<TimeBasedTriggeringPolicy />
+        		<SizeBasedTriggeringPolicy size="100 MB"/>
+      		</Policies>
+		</RollingRandomAccessFile>
+    </appenders>  
+    <loggers>  
+		<logger name="org.springframework" level="ERROR">  
+        </logger>  
+        <logger name="com.opensymphony.xwork2" level="ERROR">  
+        </logger>
+        <logger name="org.apache.ibatis" level="ERROR"> 
+         	<appender-ref ref="Console" />   
+        </logger>
+        <logger name="com.ibatis" level="DEBUG"> 
+         	<appender-ref ref="Console" />   
+        </logger>
+        <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG"> 
+         	<appender-ref ref="Console" />   
+        </logger>
+        <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"> 
+         	<appender-ref ref="Console" />   
+        </logger>       
+        <logger name="java.sql" level="DEBUG">  
+        	<appender-ref ref="Console" />   
+        </logger>        
+        <logger name="org.jboss.netty" level="ERROR">  
+        </logger>  
+        <logger name="com.mchange.v2" level="ERROR">  
+        </logger>  
+        <logger name="org.quartz"  additivity="false" level="ERROR">  
+        </logger>
+        <logger name="com.alibaba.druid" level="ERROR">  
+        </logger>        
+        <logger name="com.zaxxer.hikari" level="ERROR">  
+        </logger>  
+        <logger name="org.mybatis.spring" level="ERROR">  
+        </logger>
+        
+   		<AsyncLogger name="cn.com.workflow" level="DEBUG" includeLocation="true">
+      		<AppenderRef ref="workFlowLog"/>
+    	</AsyncLogger>
+        <AsyncLogger name="org.activiti" level="DEBUG">  
+        	<AppenderRef ref="activitiLog"/>
+        </AsyncLogger> 
+        <!-- Root Logger -->  
+		<Root level="ERROR" includeLocation="true">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="errorLog" />
+		</Root>
+    </loggers>  
+</configuration>

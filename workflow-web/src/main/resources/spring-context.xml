@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/util 
+			http://www.springframework.org/schema/util/spring-util-4.0.xsd
+			http://www.springframework.org/schema/tx  
+        	http://www.springframework.org/schema/tx/spring-tx.xsd">
+ 
+    <!-- 加载配置属性文件 -->
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:META-INF/application.properties" />
+	
+<!-- 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	    <property name="poolName" value="springHikariCP" />
+	    <property name="connectionTestQuery" value="SELECT 1" />
+	    <property name="dataSourceClassName" value="org.mariadb.jdbc.MySQLDataSource" />
+	    <property name="maximumPoolSize" value="20" />
+	    <property name="idleTimeout" value="30000" />
+	
+	    <property name="dataSourceProperties">
+	        <props>
+	            <prop key="url">jdbc:mysql://127.0.0.1:3306/activiti?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</prop>
+	            <prop key="user">root</prop>
+	            <prop key="password">211513</prop>
+	        </props>
+	    </property>
+	</bean> -->
+	<!-- 
+	<bean id="hikariConfig_query" class="com.zaxxer.hikari.HikariConfig">
+	    <property name="poolName" value="springHikariCP" />
+	    <property name="connectionTestQuery" value="SELECT 1" />
+	    <property name="dataSourceClassName" value="org.mariadb.jdbc.MySQLDataSource" />
+	    <property name="maximumPoolSize" value="20" />
+	    <property name="idleTimeout" value="30000" />
+	
+	    <property name="dataSourceProperties">
+	        <props>
+	            <prop key="url">jdbc:mysql://127.0.0.1:3306/bussinse?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</prop>
+	            <prop key="user">root</prop>
+	            <prop key="password">211513</prop>
+	        </props>
+	    </property>
+	</bean>
+	 -->
+	<!-- HikariCP configuration -->
+<!-- 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="shutdown">
+	    <constructor-arg ref="hikariConfig" />
+	</bean>
+	<bean id="dataSource_query" class="com.zaxxer.hikari.HikariDataSource" destroy-method="shutdown">
+	    <constructor-arg ref="hikariConfig_query" />
+	</bean> -->
+    
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/activiti?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull" />
+		<property name="username" value="root" />
+		<property name="password" value="211513" />
+		<property name="filters" value="stat" />
+		<property name="maxActive" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="initialSize" value="5" />
+		<property name="validationQuery" value="SELECT 'x'" />
+	</bean>   
+    
+    
+    <!--
+     <bean id="dataSource_query" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/bussinse?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull" />
+		<property name="username" value="root" />
+		<property name="password" value="211513" />
+		<property name="filters" value="stat" />
+		<property name="maxActive" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="initialSize" value="5" />
+		<property name="validationQuery" value="SELECT 'x'" />
+	</bean> 
+     -->
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource"></property>  
+        <property name="configLocation" value="classpath:mybatis-config.xml" />  
+        <property name="mapperLocations" value="classpath*:activiti_maven_project/com/git/mybatis/mapper/*Mapper.xml"></property>   
+    </bean> 
+    
+   <!--  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="cn.com.workflow.mybatis.mapper"></property>  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+    </bean> -->
+    
+    <bean id="myBatisSession"     class="org.mybatis.spring.SqlSessionTemplate">         
+ 		<constructor-arg index="0" ref="sqlSessionFactory" />   
+ 	</bean> 
+ 	
+ 	<tx:annotation-driven transaction-manager="txManager" />
+ 	
+    <bean id="txManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource"></property>  
+    </bean>
+    
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <!-- 引擎内部提供的UUID生成器，依赖fastxml的java-uuid-generator模块 -->
+    <bean id="uuidGenerator" class="org.activiti.engine.impl.persistence.StrongUuidGenerator" />
+    
+    <bean class="cn.com.workflow.common.util.SpringContextHolder"  />
+    
+    
+    
+
+	<!-- 
+	<context:component-scan base-package="dao" />
+	<context:component-scan base-package="service" />
+	<context:component-scan base-package="ldap" />
+	 -->
+	<context:component-scan base-package = "cn.com.workflow" />
+	
+	<import resource="classpath*:applicationContext-activiti.xml" />
+	<import resource="classpath*:applicationContext-redis.xml" />
+	<!-- <import resource="applicationContext-quartz2.xml" /> -->
+	<import resource="classpath*:applicationContext-async.xml" />
+	<import resource="classpath*:applicationContext-security.xml" />
+	<import resource="classpath*:applicationContext-mybatis.xml" />
+	<import resource="classpath*:applicationContext-ws.xml" />
+	<import resource="classpath*:applicationContext-ldap.xml" />
+
+</beans>

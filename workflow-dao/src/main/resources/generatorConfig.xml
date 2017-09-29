@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <classPathEntry location="D:\work\maven\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>
+  <context id="context1"  defaultModelType="flat" >
+  	<commentGenerator>
+	    <property name="suppressAllComments" value="true"/>
+	    <property name="suppressDate" value="true"/>
+	</commentGenerator>
+
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/bussinse" userId="root" password="211513" />
+    <javaModelGenerator targetPackage="cn.com.workflow.mybatis.model" targetProject="workflow-dao" />
+    <sqlMapGenerator targetPackage="cn.com.workflow.mybatis.mapper" targetProject="workflow-dao" />
+    <javaClientGenerator targetPackage="cn.com.workflow.mybatis.client" targetProject="workflow-dao" type="XMLMAPPER" />
+    <table schema="general" tableName="tb_sys_security_positions" 
+        enableCountByExample="false" 
+    	enableUpdateByExample="false" 
+    	enableDeleteByExample="false"
+    	enableSelectByExample="false" 
+    	selectByExampleQueryId="false" >
+    	<!-- <generatedKey column="id" sqlStatement="Mysql" /> -->
+    </table>
+       <table schema="general" tableName="tb_sys_security_rel_user_pos" 
+        enableCountByExample="false" 
+    	enableUpdateByExample="false" 
+    	enableDeleteByExample="false"
+    	enableSelectByExample="false" 
+    	selectByExampleQueryId="false" >
+    	<!-- <generatedKey column="id" sqlStatement="Mysql" /> -->
+    </table>
+       <table schema="general" tableName="tb_sys_security_users" 
+        enableCountByExample="false" 
+    	enableUpdateByExample="false" 
+    	enableDeleteByExample="false"
+    	enableSelectByExample="false" 
+    	selectByExampleQueryId="false" >
+    	<!-- <generatedKey column="id" sqlStatement="Mysql" /> -->
+    </table>
+  </context>
+</generatorConfiguration>

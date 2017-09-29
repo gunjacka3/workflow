@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.workflow.mybatis.client.SqlQueryMapper">
+
+
+	<resultMap id="BaseResultMap" type="java.util.Map">
+		<id column="DBID" property="id" jdbcType="VARCHAR" />
+		<result column="DBVERSION" property="dbVersion" jdbcType="INTEGER" />
+		<result column="NAME_" property="name" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="VARCHAR" />
+		<result column="DESCR" property="descr" jdbcType="VARCHAR" />
+		<result column="CREATE_" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="EXECUTION_ID_" property="executionId" jdbcType="TIMESTAMP" />
+		<result column="BIZ_NO" property="bizId" jdbcType="VARCHAR" />
+		<result column="BIZ_TYPE" property="bizType" jdbcType="VARCHAR" />
+		<result column="CUSTOMER_NAME" property="customerName"
+			jdbcType="VARCHAR" />
+		<result column="CUSTOMER_NUM" property="customerNum" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="HisResultMap" type="java.util.Map">
+		<result column="BIZ_NO" property="bizId" jdbcType="VARCHAR" />
+		<result column="BIZ_TYPE" property="bizType" jdbcType="VARCHAR" />
+		<result column="CUSTOMER_NAME" property="customerName"
+			jdbcType="VARCHAR" />
+		<result column="CUSTOMER_NUM" property="customerNum" jdbcType="VARCHAR" />
+		<result column="CUSTOMER_NUM" property="customerNum" jdbcType="VARCHAR" />
+		<result column="AMT" property="amt" jdbcType="DECIMAL" />
+		<result column="PROCESS_ID" property="processId" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="FINISH_TIME" property="finishTime" jdbcType="TIMESTAMP" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="TaskResultMap" type="java.util.Map">
+		<result column="ACTIVITY_ID" property="activityId" jdbcType="VARCHAR" />
+		<result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
+		<result column="OWNER" property="owner" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="FINISH_TIME" property="finishTime" jdbcType="TIMESTAMP" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="PROCESS_COMMENT" property="processComment"
+			jdbcType="VARCHAR" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<sql id="query_task_Column_List">
+		wti.ACTIVITY_ID AS ACTIVITY_ID,
+		wti.TASK_ID AS TASK_ID,
+		wti.`OWNER` AS `OWNER`,
+		wti.CREATE_TIME AS CREATE_TIME,
+		wti.FINISH_TIME
+		AS FINISH_TIME,
+		wti.`STATUS` AS `STATUS`,
+		wti.PROCESS_COMMENT AS
+		PROCESS_COMMENT,
+		wti.USER_ID AS USER_ID
+	</sql>
+
+	<sql id="query_his_Column_List">
+		api.BIZ_NO AS BIZ_NO,
+		api.BIZ_TYPE AS BIZ_TYPE,
+		api.CUSTOMER_NAME AS CUSTOMER_NAME,
+		api.CUSTOMER_NUM AS CUSTOMER_NUM,
+		api.AMT AS AMT,
+		pi.PROCESS_ID AS PROCESS_ID,
+		pi.CREATE_TIME AS
+		CREATE_TIME,
+		pi.FINISH_TIME AS FINISH_TIME,
+		pi.`STATUS` AS `STATUS`
+	</sql>
+
+
+	<sql id="query_work_Column_List">
+		jtask.DBID_ AS DBID,
+		jtask.DBVERSION_ AS DBVERSION,
+		jtask.NAME_ AS NAME_,
+		jtask.STATE_ AS STATE,
+		jtask.DESCR_ AS DESCR,
+		jtask.CREATE_ AS CREATE_,
+		jtask.EXECUTION_ID_ AS EXECUTION_ID_ ,
+		api.BIZ_NO AS BIZ_NO,
+		api.BIZ_TYPE AS BIZ_TYPE,
+		api.CUSTOMER_NAME AS
+		CUSTOMER_NAME,
+		api.CUSTOMER_NUM AS CUSTOMER_NUM
+	</sql>
+
+	
+	
+	<select id="countWorkByTemplate" resultType="java.util.HashMap"
+		parameterType="java.lang.String">
+		SELECT
+			RES.PROC_DEF_ID_ AS pdi,
+			count(RES.PROC_DEF_ID_) AS con
+		FROM
+			ACT_RU_TASK RES
+		WHERE
+			RES.ASSIGNEE_ = #{userId,jdbcType=VARCHAR}
+		AND RES.SUSPENSION_STATE_ = 1
+		GROUP BY
+			RES.PROC_DEF_ID_;
+	</select>
+	
+
+	
+	
+	
+	<select id="countCandiWorkByTemplate" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT
+			RES.*
+		FROM
+			ACT_RU_TASK RES
+		INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+		WHERE
+			RES.ASSIGNEE_ IS NULL
+		AND I.TYPE_ = 'candidate'
+		AND (
+			I.USER_ID_ = #{userId,jdbcType=VARCHAR}
+			OR I.GROUP_ID_ IN 
+			<foreach item="item" index="index" collection="groupIds" open="(" separator="," close=")">  
+            #{item}  
+        	</foreach> 
+		)GROUP BY RES.PROC_DEF_ID_
+	</select>
+	
+	
+	
+	
+	
+	
+
+	<select id="conutWorkListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		SELECT
+		<include refid="query_work_Column_List" />
+		FROM
+		JBPM4_TASK jtask ,wfmid_app_process_instance api 
+		WHERE
+		jtask.ASSIGNEE_ =
+		#{userId,jdbcType=VARCHAR}
+		AND
+			substring_index(api.PROCESS_ID,".",-1 ) = jtask.PROCINST_  
+		AND jtask.STATE_='open'
+		<if test="bizType != null">
+			AND api.BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null">
+			AND api.CUSTOMER_NAME like
+			#{customerName,jdbcType=VARCHAR}
+		</if>
+		<if test="customerNum != null">
+			AND api.CUSTOMER_NUM = #{customerNum,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCd != null">
+			AND api.ORG_CD = #{orgCd,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCd != null">
+			AND api.ROLE_CD = #{roleCd,jdbcType=VARCHAR}
+		</if>
+		<if test="bizId != null">
+			AND api.BIZ_NO = #{bizId,jdbcType=VARCHAR}
+		</if>
+		) temp_teble_name
+	</select>
+	
+	<select id="conutJoinWorkListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		SELECT
+		<include refid="query_work_Column_List" />
+		FROM
+		JBPM4_TASK jtask ,wfmid_app_process_instance api 
+		WHERE
+		jtask.ASSIGNEE_ =
+		#{userId,jdbcType=VARCHAR}
+		AND
+			api.PROCESS_ID = jtask.DESCR_
+		AND jtask.STATE_='open'
+		<if test="bizType != null">
+			AND api.BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null">
+			AND api.CUSTOMER_NAME like
+			#{customerName,jdbcType=VARCHAR}
+		</if>
+		<if test="customerNum != null">
+			AND api.CUSTOMER_NUM = #{customerNum,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCd != null">
+			AND api.ORG_CD = #{orgCd,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCd != null">
+			AND api.ROLE_CD = #{roleCd,jdbcType=VARCHAR}
+		</if>
+		<if test="bizId != null">
+			AND api.BIZ_NO = #{bizId,jdbcType=VARCHAR}
+		</if>
+		) temp_teble_name
+	</select>
+
+	<select id="queryWorkList" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="query_work_Column_List" />
+		FROM
+		JBPM4_TASK jtask ,wfmid_app_process_instance api 
+		WHERE
+		jtask.ASSIGNEE_ =
+		#{userId,jdbcType=VARCHAR}
+		AND
+			substring_index(api.PROCESS_ID,".",-1 ) = jtask.PROCINST_ 
+		AND jtask.STATE_='open'
+		<if test="bizType != null">
+			AND api.BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null">
+			AND api.CUSTOMER_NAME like
+			#{customerName,jdbcType=VARCHAR}
+		</if>
+		<if test="customerNum != null">
+			AND api.CUSTOMER_NUM = #{customerNum,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCd != null">
+			AND api.ORG_CD = #{orgCd,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCd != null">
+			AND api.ROLE_CD = #{roleCd,jdbcType=VARCHAR}
+		</if>
+		<if test="bizId != null">
+			AND api.BIZ_NO = #{bizId,jdbcType=VARCHAR}
+		</if>
+		ORDER BY
+		CREATE_
+		<if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="queryJoinWorkList" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="query_work_Column_List" />
+		FROM
+		JBPM4_TASK jtask ,wfmid_app_process_instance api 
+		WHERE
+		jtask.ASSIGNEE_ =
+		#{userId,jdbcType=VARCHAR}
+		AND
+			api.PROCESS_ID = jtask.DESCR_
+		AND jtask.STATE_='open'
+		<if test="bizType != null">
+			AND api.BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null">
+			AND api.CUSTOMER_NAME like
+			#{customerName,jdbcType=VARCHAR}
+		</if>
+		<if test="customerNum != null">
+			AND api.CUSTOMER_NUM = #{customerNum,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCd != null">
+			AND api.ORG_CD = #{orgCd,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCd != null">
+			AND api.ROLE_CD = #{roleCd,jdbcType=VARCHAR}
+		</if>
+		<if test="bizId != null">
+			AND api.BIZ_NO = #{bizId,jdbcType=VARCHAR}
+		</if>
+		ORDER BY
+		CREATE_
+		<if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="conutSuspendListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		SELECT
+		<include refid="query_work_Column_List" />
+		FROM
+		JBPM4_TASK jtask,
+		wfmid_app_process_instance api 
+		
+		WHERE
+		api.PROCESS_ID=jtask.EXECUTION_ID_
+		AND jtask.ASSIGNEE_ =
+		#{userId,jdbcType=VARCHAR}
+		AND jtask.STATE_='suspended'
+		<if test="bizType != null">
+			AND api.BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null">
+			AND api.CUSTOMER_NAME like
+			#{customerName,jdbcType=VARCHAR}
+		</if>
+		<if test="customerNum != null">
+			AND api.CUSTOMER_NUM = #{customerNum,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCd != null">
+			AND api.ORG_CD = #{orgCd,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCd != null">
+			AND api.ROLE_CD = #{roleCd,jdbcType=VARCHAR}
+		</if>
+		<if test="bizId != null">
+			AND api.BIZ_NO = #{bizId,jdbcType=VARCHAR}
+		</if>
+		ORDER BY
+		jtask.CREATE_ DESC
+		) temp_teble_name
+	</select>
+
+	<select id="querySuspendList" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="query_work_Column_List" />
+		FROM
+		JBPM4_TASK jtask,
+		wfmid_app_process_instance api 
+		WHERE
+		api.PROCESS_ID=jtask.EXECUTION_ID_
+		AND jtask.ASSIGNEE_ =
+		#{userId,jdbcType=VARCHAR}
+		AND jtask.STATE_='suspended'
+		<if test="bizType != null">
+			AND api.BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null">
+			AND api.CUSTOMER_NAME like
+			#{customerName,jdbcType=VARCHAR}
+		</if>
+		<if test="customerNum != null">
+			AND api.CUSTOMER_NUM = #{customerNum,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCd != null">
+			AND api.ORG_CD = #{orgCd,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCd != null">
+			AND api.ROLE_CD = #{roleCd,jdbcType=VARCHAR}
+		</if>
+		<if test="bizId != null">
+			AND api.BIZ_NO = #{bizNo,jdbcType=VARCHAR}
+		</if>
+		ORDER BY
+		jtask.CREATE_
+		<if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+
+
+	<sql id="query_user_Column_List">
+		u.ID_ AS ID_,
+		u.PASSWORD_ AS PASSWORD_,
+		u.GIVENNAME_ AS
+		GIVENNAME_,
+		u.FAMILYNAME_ AS FAMILYNAME_,
+		u.BUSINESSEMAIL_ AS
+		BUSINESSEMAIL_
+	</sql>
+
+	<resultMap id="UsersResultMap" type="java.util.Map">
+		<result column="ID_" property="id" jdbcType="VARCHAR" />
+		<result column="PASSWORD_" property="password" jdbcType="VARCHAR" />
+		<result column="GIVENNAME_" property="givenName" jdbcType="VARCHAR" />
+		<result column="FAMILYNAME_" property="familyName" jdbcType="VARCHAR" />
+		<result column="BUSINESSEMAIL_" property="mail" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="queryUserList" resultMap="UsersResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="query_user_Column_List" />
+		from jbpm4_id_user u
+		<where>
+			<if test="id != null">
+				u.ID_ = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="givenName != null">
+				and u.GIVENNAME_ = #{givenName,jdbcType=VARCHAR}
+			</if>
+			<if test="familyName != null">
+				and u.FAMILYNAME_ = #{familyName,jdbcType=VARCHAR}
+			</if>
+			<if test="groupId != null">
+				and u.DBID_ IN (
+				SELECT
+				jbm.user_
+				FROM
+				jbpm4_id_membership jbm
+				WHERE
+				jbm.group_ = #{groupId,jdbcType=VARCHAR}
+				)
+			</if>
+		</where>
+		<if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+	<select id="conutUserListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		SELECT
+		<include refid="query_user_Column_List" />
+		from jbpm4_id_user u
+		<where>
+			<if test="id != null">
+				u.ID_ = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="givenName != null">
+				and u.GIVENNAME_ = #{givenName,jdbcType=VARCHAR}
+			</if>
+			<if test="familyName != null">
+				and u.FAMILYNAME_ = #{familyName,jdbcType=VARCHAR}
+			</if>
+			<if test="groupId != null">
+				and u.DBID_ IN (
+				SELECT
+				jbm.user_
+				FROM
+				jbpm4_id_membership jbm
+				WHERE
+				jbm.group_ = #{groupId,jdbcType=VARCHAR}
+				)
+			</if>
+
+		</where>
+		) temp_teble_name
+	</select>
+
+
+
+
+
+
+
+
+	<sql id="query_group_Column_List">
+		g.DBID_ AS DBID_,
+		g.ID_ AS ID_,
+		g.NAME_ AS NAME_,
+		g.TYPE_ AS
+		TYPE_,
+		g.PARENT_ AS PARENT_
+	</sql>
+
+	<resultMap id="GroupResultMap" type="java.util.Map">
+		<result column="DBID_" property="dbId" jdbcType="VARCHAR" />
+		<result column="ID_" property="id" jdbcType="VARCHAR" />
+		<result column="NAME_" property="name" jdbcType="VARCHAR" />
+		<result column="TYPE_" property="type" jdbcType="VARCHAR" />
+		<result column="PARENT_" property="parent" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="queryGroupList" resultMap="GroupResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="query_group_Column_List" />
+		from jbpm4_id_group g
+		<where>
+			<if test="id != null">
+				g.ID_ = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				and g.NAME_ = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				and g.TYPE_ = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="parent != null">
+				and g.PARENT_ = #{parent,jdbcType=VARCHAR}
+			</if>
+		</where>
+		<if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<!-- <select id="selectGroupDBIDById" resultType="GroupResultMap"
+		parameterType="java.util.Map">
+		SELECT DBID_
+		<include refid="query_group_Column_List" />
+		from jbpm4_id_group g
+		where
+		g.ID_ = #{id,jdbcType=VARCHAR}
+	</select> -->
+
+	<select id="conutGroupListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		SELECT
+		<include refid="query_group_Column_List" />
+		from jbpm4_id_group g
+		<where>
+			<if test="id != null">
+				g.ID_ = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				and g.NAME_ = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				and g.TYPE_ = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="parent != null">
+				and g.PARENT_ = #{parent,jdbcType=VARCHAR}
+			</if>
+		</where>
+		) temp_teble_name
+	</select>
+
+	<select id="queryUserById" resultMap="UserResultMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		<include refid="query_user_Column_List" />
+		from jbpm4_id_user u
+		where
+		u.ID_ = #{userId,jdbcType=VARCHAR}
+
+	</select>
+
+
+
+	<update id="updateUser" parameterType="java.util.HashMap">
+		update jbpm4_id_user
+		set
+		PASSWORD_ = #{password,jdbcType=VARCHAR}
+		where ID_ = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+	<resultMap id="UserResultMap" type="cn.com.workflow.user.User">
+		<result column="ID_" property="userId" jdbcType="VARCHAR" />
+		<result column="PASSWORD_" property="password" jdbcType="VARCHAR" />
+		<result column="GIVENNAME_" property="givenName" jdbcType="VARCHAR" />
+		<result column="FAMILYNAME_" property="familyName" jdbcType="VARCHAR" />
+		<result column="BUSINESSEMAIL_" property="mail" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+
+	<resultMap id="AllWorks" type="java.util.Map">
+		<result column="ID_" property="id" jdbcType="VARCHAR" />
+		<result column="ACTIVITY_NAME_" property="activityName"
+			jdbcType="VARCHAR" />
+		<result column="GROUPID_" property="groupId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="queryAllCandiWork" resultMap="AllWorks"
+		parameterType="java.util.HashMap">
+		SELECT
+		jt.dbid_ AS ID_,
+		jt.activity_name_ AS
+		ACTIVITY_NAME_,
+		jp.groupid_ AS GROUPID_
+		FROM
+		JBPM4_PARTICIPATION jp,
+		JBPM4_TASK jt 
+		WHERE
+		jp.TASK_ = jt.DBID_
+		AND jp.TYPE_ = 'candidate'
+		AND jt.state_ = 'open'
+		ORDER BY
+		jp.groupid_
+	</select>
+
+
+
+	<select id="queryUserByGroupId" resultMap="UserResultMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		<include refid="query_user_Column_List" />
+		FROM
+		jbpm4_id_user u,
+		jbpm4_id_membership mem ,
+		jbpm4_id_group grp 
+		where
+		u.DBID_ = mem.USER_
+		AND grp.DBID_=mem.GROUP_
+		AND grp.ID_= #{groupId,jdbcType=VARCHAR}
+		<if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+	<select id="conutUserByGroupListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		SELECT
+		<include refid="query_user_Column_List" />
+		FROM
+		jbpm4_id_user u,
+		jbpm4_id_membership mem ,
+		jbpm4_id_group grp 
+		where
+		u.DBID_ = mem.USER_
+		AND grp.DBID_=mem.GROUP_
+		AND grp.ID_= #{groupId,jdbcType=VARCHAR}
+		) temp_teble_name
+	</select>
+
+
+	<select id="countPIForChart" resultType="java.util.HashMap" >
+		SELECT
+			hp.PROC_DEF_ID_ AS pdi,
+			count(hp.PROC_DEF_ID_) AS con
+		FROM
+			act_hi_procinst hp
+		GROUP BY
+			hp.PROC_DEF_ID_
+		ORDER BY con DESC;
+	</select>
+</mapper>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.git.baidu.mybatis.client.WfmidLoginfoMapper">
+	<resultMap id="BaseResultMap" type="cn.com.workflow.mybatis.model.WfmidLoginfo">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
+		<result column="PROCESS_ID" property="processId" jdbcType="VARCHAR" />
+		<result column="ACTIVITY_NAME" property="activityName" jdbcType="VARCHAR" />
+		<result column="LOG_TIME" property="logTime" jdbcType="TIMESTAMP" />
+		<result column="OPERATION_TYPE" property="operationType"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="cn.com.workflow.mybatis.model.WfmidLoginfo"
+		extends="BaseResultMap">
+		<!-- <result column="INFO_TEXT" property="infoText" typeHandler="com.git.baidu.mybatis.handler.ConvertBlobTypeHandler"/> -->
+		<result column="INFO_TEXT" property="infoText"
+			jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	
+	<sql id="Base_Column_List">
+		ID, TASK_ID, PROCESS_ID, ACTIVITY_NAME,  DATE_FORMAT(LOG_TIME, '%Y-%m-%d %T') AS LOG_TIME, OPERATION_TYPE
+	</sql>
+	<sql id="Blob_Column_List">
+		INFO_TEXT
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from wfmid_loginfo
+		where ID = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from wfmid_loginfo
+		where ID = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="cn.com.workflow.mybatis.model.WfmidLoginfo">
+		insert into wfmid_loginfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="taskId != null">
+				TASK_ID,
+			</if>
+			<if test="processId != null">
+				PROCESS_ID,
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME,
+			</if>
+			<if test="logTime != null">
+				LOG_TIME,
+			</if>
+			<if test="operationType != null">
+				OPERATION_TYPE,
+			</if>
+			<if test="infoText != null">
+				INFO_TEXT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="taskId != null">
+				#{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="processId != null">
+				#{processId,jdbcType=VARCHAR},
+			</if>
+			<if test="activityName != null">
+				#{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				#{logTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operationType != null">
+				#{operationType,jdbcType=VARCHAR},
+			</if>
+			<if test="infoText != null">
+				#{infoText,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<insert id="insertSelective" parameterType="cn.com.workflow.mybatis.model.WfmidLoginfo">
+		insert into wfmid_loginfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="taskId != null">
+				TASK_ID,
+			</if>
+			<if test="processId != null">
+				PROCESS_ID,
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME,
+			</if>
+			<if test="logTime != null">
+				LOG_TIME,
+			</if>
+			<if test="operationType != null">
+				OPERATION_TYPE,
+			</if>
+			<if test="infoText != null">
+				INFO_TEXT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="taskId != null">
+				#{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="processId != null">
+				#{processId,jdbcType=VARCHAR},
+			</if>
+			<if test="activityName != null">
+				#{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				#{logTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operationType != null">
+				#{operationType,jdbcType=VARCHAR},
+			</if>
+			<if test="infoText != null">
+				#{infoText,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="cn.com.workflow.mybatis.model.WfmidLoginfo">
+		update wfmid_loginfo
+		<set>
+			<if test="taskId != null">
+				TASK_ID = #{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="processId != null">
+				PROCESS_ID = #{processId,jdbcType=VARCHAR},
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				LOG_TIME = #{logTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operationType != null">
+				OPERATION_TYPE = #{operationType,jdbcType=VARCHAR},
+			</if>
+			<if test="infoText != null">
+				INFO_TEXT = #{infoText,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.workflow.mybatis.model.WfmidLoginfo">
+		update wfmid_loginfo
+		<set>
+			<if test="taskId != null">
+				TASK_ID = #{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="processId != null">
+				PROCESS_ID = #{processId,jdbcType=VARCHAR},
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				LOG_TIME = #{logTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operationType != null">
+				OPERATION_TYPE = #{operationType,jdbcType=VARCHAR},
+			</if>
+			<if test="infoText != null">
+				INFO_TEXT = #{infoText,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="cn.com.workflow.mybatis.model.WfmidLoginfo">
+		update wfmid_loginfo
+		<set>
+			<if test="taskId != null">
+				TASK_ID = #{taskId,jdbcType=VARCHAR},
+			</if>
+			<if test="processId != null">
+				PROCESS_ID = #{processId,jdbcType=VARCHAR},
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				LOG_TIME = #{logTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operationType != null">
+				OPERATION_TYPE = #{operationType,jdbcType=VARCHAR},
+			</if>
+			<if test="infoText != null">
+				INFO_TEXT = #{infoText,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="queryList" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" /> , <include refid="Blob_Column_List" />
+		from wfmid_loginfo
+		<where>
+			<if test="taskId != null">
+				TASK_ID = #{taskId,jdbcType=VARCHAR}
+			</if>
+			<if test="processId != null">
+				PROCESS_ID = #{processId,jdbcType=VARCHAR}
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				AND LOG_TIME = #{logTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="operationType != null">
+				AND OPERATION_TYPE = #{operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="infoText != null">
+				AND INFO_TEXT = #{infoText,jdbcType=LONGVARCHAR}
+			</if>
+		</where>
+		  ORDER BY LOG_TIME
+		  <if test="startIndex != null">
+			limit
+			#{startIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="fandText" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+		select 
+		<include refid="Base_Column_List" /> , <include refid="Blob_Column_List" />
+		from wfmid_loginfo
+		where ID = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="conutListForPage" resultType="java.lang.Long"
+		parameterType="java.util.HashMap">
+		SELECT COUNT(0) AS COUNT FROM (
+		select
+		<include refid="Base_Column_List" />
+		from wfmid_loginfo
+		<where>
+			<if test="taskId != null">
+				TASK_ID = #{taskId,jdbcType=VARCHAR}
+			</if>
+			<if test="processId != null">
+				PROCESS_ID = #{processId,jdbcType=VARCHAR}
+			</if>
+			<if test="activityName != null">
+				ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR},
+			</if>
+			<if test="logTime != null">
+				AND LOG_TIME = #{logTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="operationType != null">
+				AND OPERATION_TYPE = #{operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="infoText != null">
+				AND INFO_TEXT = #{infoText,jdbcType=LONGVARCHAR}
+			</if>
+		</where>
+		) temp_teble_name
+	</select>
+
+
+
+
+	<select id="queryTextInfoByProcessId" resultMap="ResultMapWithBLOBs" parameterType="java.util.HashMap">
+		select
+			<include refid="Base_Column_List" /> , <include refid="Blob_Column_List" />
+		from wfmid_loginfo
+		<where>
+			<if test="processId != null">
+				PROCESS_ID = #{processId,jdbcType=VARCHAR}
+			</if>
+			<if test="operationType != null">
+				AND OPERATION_TYPE = #{operationType,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+</mapper>

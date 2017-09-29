@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="cn.com.git.nfcredit.act">
+  <process id="nfcredit_audit_process" name="现金贷审批流程" isExecutable="true">
+    <startEvent id="sid-EF89C555-E75B-46D7-A555-0B7ED6C25C86"></startEvent>
+    <serviceTask id="paramFind" name="合同参数查询" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[processFlowParaService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[get]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.lang.String]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_default">
+          <activiti:string><![CDATA[${contractId}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allResponse">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="ratingRule" name="客户评级" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[localDrools]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_sessionName">
+          <activiti:string><![CDATA[ksession-rating]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.rules.rating.RatingObject]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_rating">
+          <activiti:string><![CDATA[${rating}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_ratePoint">
+          <activiti:string><![CDATA[${point}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_cusLevelRatio">
+          <activiti:string><![CDATA[${cusLevelRatio}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="accessRuleForNew" name="新客户准入规则" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[localDrools]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_sessionName">
+          <activiti:string><![CDATA[ksession-access]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.rules.access.AccessRulesObject]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_accessResult">
+          <activiti:string><![CDATA[${result}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_accessPoint">
+          <activiti:string><![CDATA[${point}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="contractDestroy" name="合同废止" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[printerService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[print]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_task">
+          <activiti:string><![CDATA[合同拒绝]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="sid-427D0CB5-4D8B-4869-B3D6-F6D77241B3BD"></endEvent>
+    <exclusiveGateway id="sid-8C835551-F5BE-4925-8D55-0E1802966770"></exclusiveGateway>
+    <serviceTask id="commenceContract" name="合同生效" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[printerService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[print]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_task">
+          <activiti:string><![CDATA[合同生效]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="calcCredit" name="额度计算" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[localDrools]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_sessionName">
+          <activiti:string><![CDATA[ksession-credit]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.rules.credit.CreditObject]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_finalCredit">
+          <activiti:string><![CDATA[${finalCredit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_creditPoint">
+          <activiti:string><![CDATA[${creditPoint}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="assignTask" name="审批任务分配" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.modules.act.entity.Act]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[randomAssignTaskService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[assign]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_roleName">
+          <activiti:string><![CDATA[check]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_checkUser">
+          <activiti:string><![CDATA[${default}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="checkAudit" name="审核" activiti:assignee="${checkUser}" activiti:formKey="/approve/task/checkform"></userTask>
+    <endEvent id="sid-5A3738B5-213C-4E5D-B15D-C2B04FA2EE37"></endEvent>
+    <sequenceFlow id="sid-034CEFFC-7BC6-4888-96B7-79E7AE9EAA77" sourceRef="assignTask" targetRef="checkAudit"></sequenceFlow>
+    <exclusiveGateway id="sid-03E4F5ED-EEC8-4B4F-80C6-8DF7B7CB2561"></exclusiveGateway>
+    <userTask id="additionalDocument" name="补件提交"></userTask>
+    <serviceTask id="calcDecision" name="决策规则" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[localDrools]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_sessionName">
+          <activiti:string><![CDATA[ksession-decision]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.rules.decision.DecisionObject]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_decisionResult">
+          <activiti:string><![CDATA[${decisionResult}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_riskLevel">
+          <activiti:string><![CDATA[${riskLevel}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="sid-772FEF5B-3D04-4660-913A-5B78DCB81823"></exclusiveGateway>
+    <serviceTask id="assignCheckTask" name="审批任务分配" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.modules.act.entity.Act]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[randomAssignTaskService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[assign]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_roleName">
+          <activiti:string><![CDATA[approve]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_approveUser">
+          <activiti:string><![CDATA[${default}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="approveAudit" name="审批" activiti:assignee="${approveUser}" activiti:formKey="/approve/task/approveform"></userTask>
+    <sequenceFlow id="sid-23E7776C-83AF-443A-941B-0153B41A8C81" sourceRef="assignCheckTask" targetRef="approveAudit"></sequenceFlow>
+    <exclusiveGateway id="sid-960B0E27-E3B5-4717-ADE1-6169A436E238"></exclusiveGateway>
+    <sequenceFlow id="sid-14FF865B-0897-423F-9552-09F5557470F9" sourceRef="ratingRule" targetRef="accessRuleForNew"></sequenceFlow>
+    <exclusiveGateway id="sid-A01B4D24-7018-4623-A22A-463419E907D1"></exclusiveGateway>
+    <serviceTask id="accessRuleForOld" name="老客户准入规则" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[localDrools]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_sessionName">
+          <activiti:string><![CDATA[ksession-accessForOld]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[cn.com.git.nfcredit.rules.access.AccessRulesObject]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_accessResult">
+          <activiti:string><![CDATA[${result}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2"></exclusiveGateway>
+    <sequenceFlow id="sid-B951741E-8F96-43DD-976E-B46DA9168519" sourceRef="accessRuleForOld" targetRef="sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2"></sequenceFlow>
+    <sequenceFlow id="sid-EDA68592-2F0C-4E0C-B029-DA6B524C3434" name="转人工" sourceRef="sid-772FEF5B-3D04-4660-913A-5B78DCB81823" targetRef="assignCheckTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decisionResult==3||decisionResult==4}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="handleResult" name="业务数据处理" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[handleResultService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[saveResult]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_customerNum">
+          <activiti:string><![CDATA[${customerNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_ratePoint">
+          <activiti:string><![CDATA[${ratePoint}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_rating">
+          <activiti:string><![CDATA[${rating}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractNum">
+          <activiti:string><![CDATA[${contractNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_finalCredit">
+          <activiti:string><![CDATA[${finalCredit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_creditPoint">
+          <activiti:string><![CDATA[${creditPoint}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_decisionResult">
+          <activiti:string><![CDATA[${decisionResult}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_availableLimit">
+          <activiti:string><![CDATA[${availableLimit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractAmt">
+          <activiti:string><![CDATA[${contractTotalAmt}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_accessPoint">
+          <activiti:string><![CDATA[${accessPoint}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_accessResult">
+          <activiti:string><![CDATA[${accessResult}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_riskLevel">
+          <activiti:string><![CDATA[${riskLevel}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_decisionResult">
+          <activiti:string><![CDATA[${decisionResult}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_creditLimitAmount">
+          <activiti:string><![CDATA[${creditLimitAmount}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_finalAvailableLimit">
+          <activiti:string><![CDATA[${calcCreditLimit}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-2457ACA9-A978-4283-A693-3EC88D98CE99" sourceRef="approveAudit" targetRef="sid-960B0E27-E3B5-4717-ADE1-6169A436E238"></sequenceFlow>
+    <sequenceFlow id="sid-AE2A6A0F-BA11-45BD-8CF1-356833AF54BA" sourceRef="calcDecision" targetRef="handleResult"></sequenceFlow>
+    <sequenceFlow id="sid-8E33561C-4A56-4B8C-90CC-3A0EB5835A13" sourceRef="handleResult" targetRef="sid-772FEF5B-3D04-4660-913A-5B78DCB81823"></sequenceFlow>
+    <sequenceFlow id="sid-2878EEF6-AC90-4700-9039-6585FA448467" name="有授信" sourceRef="paramFind" targetRef="accessRuleForOld">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${creditLimitAmount!=null}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-CE77EEA5-B31E-418F-A708-16B94AB39D80" name="通过" sourceRef="sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2" targetRef="sid-A01B4D24-7018-4623-A22A-463419E907D1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accessResult==2}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="handleAuto" name="处理自动流程事件" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[handleAutoPassService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[handleAutoPass]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_customerNum">
+          <activiti:string><![CDATA[${customerNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_rating">
+          <activiti:string><![CDATA[${rating}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_finalCredit">
+          <activiti:string><![CDATA[${finalCredit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_availableLimit">
+          <activiti:string><![CDATA[${availableLimit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractAmt">
+          <activiti:string><![CDATA[${contractTotalAmt}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractNum">
+          <activiti:string><![CDATA[${contractNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_finalAvailableLimit">
+          <activiti:string><![CDATA[${finalAvailableLimit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_creditLimitAmount">
+          <activiti:string><![CDATA[${creditLimitAmount}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-FECC525D-3FA5-40A7-82E9-285A49442939" name="生效" sourceRef="sid-772FEF5B-3D04-4660-913A-5B78DCB81823" targetRef="handleAuto">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decisionResult==2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-213DACE9-5B0F-43DE-A95C-42BBB7D6B6A4" name="没有授信" sourceRef="paramFind" targetRef="ratingRule">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${creditLimitAmount==null}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="handleRefuse" name="处理拒绝事件" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[handleRefuseService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[handleRefuse]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractNum">
+          <activiti:string><![CDATA[${contractNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_result">
+          <activiti:string><![CDATA[1]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-D745C3D6-2C86-416E-879F-DD817E381FC7" name="拒绝" sourceRef="sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2" targetRef="handleRefuse">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accessResult==1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-246AAD72-8A5B-4C13-A4A4-C1B6F1D40382" name="审批拒绝" sourceRef="sid-960B0E27-E3B5-4717-ADE1-6169A436E238" targetRef="handleRefuse">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approveResult==1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-CFA9D5E6-CC63-402F-BBB8-5DA722D6710A" name="拒绝" sourceRef="sid-772FEF5B-3D04-4660-913A-5B78DCB81823" targetRef="handleRefuse">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decisionResult==1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-8EC748D5-D322-4582-82CF-5B0049B9A024" name="退回审核" sourceRef="sid-960B0E27-E3B5-4717-ADE1-6169A436E238" targetRef="checkAudit">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approveResult==4}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="handleCredit" name="授信结果处理" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[handleCusCreditService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[handleCusCredit]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="allRequest">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_customerNum">
+          <activiti:string><![CDATA[${customerNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_creditLimitAmount">
+          <activiti:string><![CDATA[${creditLimitAmount}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_availableLimit">
+          <activiti:string><![CDATA[${availableLimit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_creditLimit">
+          <activiti:string><![CDATA[${finalCredit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="p_calcCreditLimit">
+          <activiti:string><![CDATA[${finalAvailableLimit}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_customName">
+          <activiti:string><![CDATA[${customName}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-8C2EB714-A533-482A-AF55-3EB11A0C9063" name="余额足够" sourceRef="sid-A01B4D24-7018-4623-A22A-463419E907D1" targetRef="calcDecision">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${availableLimit>contractTotalAmt}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-5AF300AA-B0EF-48F1-B9EF-41DA48DD2E52" sourceRef="sid-EF89C555-E75B-46D7-A555-0B7ED6C25C86" targetRef="paramFind"></sequenceFlow>
+    <sequenceFlow id="sid-1C5EEA2A-9788-4DCC-A404-15AC41BFD97C" sourceRef="calcCredit" targetRef="handleCredit"></sequenceFlow>
+    <sequenceFlow id="sid-F30DCE41-E40D-457F-8FB2-C6876B4CE7F4" sourceRef="handleCredit" targetRef="calcDecision"></sequenceFlow>
+    <sequenceFlow id="sid-9926A9AF-4595-4F1D-BABC-7F0E193EF346" name="通过" sourceRef="sid-8C835551-F5BE-4925-8D55-0E1802966770" targetRef="calcCredit">
+      <documentation>通过</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accessResult==2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-73CDA3B9-3484-4BD2-9BF9-218468851FAF" name="余额不足" sourceRef="sid-A01B4D24-7018-4623-A22A-463419E907D1" targetRef="calcCredit">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${availableLimit<contractTotalAmt}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-3322E196-D942-4F28-95B3-37E0C8943359" sourceRef="checkAudit" targetRef="sid-03E4F5ED-EEC8-4B4F-80C6-8DF7B7CB2561"></sequenceFlow>
+    <serviceTask id="sendPassMessage" name="发送消息" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[sendMessageService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[sendMessage]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_customerNum">
+          <activiti:string><![CDATA[${customerNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractNum">
+          <activiti:string><![CDATA[${contractNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_approveFlag">
+          <activiti:string><![CDATA[yes]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-33D12A30-011A-414B-90D9-A38728150F7A" sourceRef="handleAuto" targetRef="sendPassMessage"></sequenceFlow>
+    <sequenceFlow id="sid-537A3B8F-6B8D-459C-A3AC-2BA02386654B" sourceRef="sendPassMessage" targetRef="commenceContract"></sequenceFlow>
+    <sequenceFlow id="sid-342F47DE-5484-4E21-9EC2-0912C70CB83A" sourceRef="commenceContract" targetRef="sid-5A3738B5-213C-4E5D-B15D-C2B04FA2EE37"></sequenceFlow>
+    <serviceTask id="sendRefuseMessage" name="发送消息" activiti:class="cn.com.git.nfcredit.common.act.ActServiceTaskExtension">
+      <extensionElements>
+        <activiti:field name="type">
+          <activiti:string><![CDATA[bean]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_paramClass">
+          <activiti:string><![CDATA[java.util.HashMap]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_beanName">
+          <activiti:string><![CDATA[sendMessageService]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="m_mName">
+          <activiti:string><![CDATA[sendMessage]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_customerNum">
+          <activiti:string><![CDATA[${customerNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_contractNum">
+          <activiti:string><![CDATA[${contractNum}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="r_approveFlag">
+          <activiti:string><![CDATA[no]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-67F07E67-2EDE-41D7-BC1F-531BBFDB2310" sourceRef="handleRefuse" targetRef="sendRefuseMessage"></sequenceFlow>
+    <sequenceFlow id="sid-CABAB627-529D-4D99-B794-2FF451F7CAF3" sourceRef="sendRefuseMessage" targetRef="contractDestroy"></sequenceFlow>
+    <sequenceFlow id="sid-B5CCC255-2B0C-40B4-8BBA-4701656A7716" sourceRef="contractDestroy" targetRef="sid-427D0CB5-4D8B-4869-B3D6-F6D77241B3BD"></sequenceFlow>
+    <sequenceFlow id="sid-11636DE8-977A-43F2-B437-9A87CAF394B6" name="人工" sourceRef="sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2" targetRef="assignTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accessResult==3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-4B788522-F385-490E-A1DF-06CCF6FAB750" sourceRef="accessRuleForNew" targetRef="sid-8C835551-F5BE-4925-8D55-0E1802966770"></sequenceFlow>
+    <sequenceFlow id="sid-BA13F8F9-B1CF-4662-BD46-A661D937F87D" name="人工" sourceRef="sid-8C835551-F5BE-4925-8D55-0E1802966770" targetRef="assignTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accessResult==3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-95870F77-7021-4A54-B367-36215145B723" name="拒绝" sourceRef="sid-8C835551-F5BE-4925-8D55-0E1802966770" targetRef="handleRefuse">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accessResult==1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-2FF1CC00-9045-4FD0-A263-4CD86DE4EDC5" name="审批通过" sourceRef="sid-960B0E27-E3B5-4717-ADE1-6169A436E238" targetRef="sendPassMessage">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approveResult==2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-A18166AA-225D-4D93-BAC2-76F4E4B60CC2" name="通过" sourceRef="sid-03E4F5ED-EEC8-4B4F-80C6-8DF7B7CB2561" targetRef="calcCredit">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkResult==2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-66537E4A-1085-430D-8466-1B7331B40D8D" sourceRef="additionalDocument" targetRef="checkAudit"></sequenceFlow>
+    <sequenceFlow id="sid-4ABC0024-ECC5-41AE-986C-47DE596D5B82" name="补件" sourceRef="sid-03E4F5ED-EEC8-4B4F-80C6-8DF7B7CB2561" targetRef="additionalDocument">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkResult==1}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_nfcredit_audit_process">
+    <bpmndi:BPMNPlane bpmnElement="nfcredit_audit_process" id="BPMNPlane_nfcredit_audit_process">
+      <bpmndi:BPMNShape bpmnElement="sid-EF89C555-E75B-46D7-A555-0B7ED6C25C86" id="BPMNShape_sid-EF89C555-E75B-46D7-A555-0B7ED6C25C86">
+        <omgdc:Bounds height="30.0" width="30.0" x="0.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="paramFind" id="BPMNShape_paramFind">
+        <omgdc:Bounds height="80.0" width="100.0" x="75.0" y="255.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ratingRule" id="BPMNShape_ratingRule">
+        <omgdc:Bounds height="80.0" width="100.0" x="183.33333819000825" y="480.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="accessRuleForNew" id="BPMNShape_accessRuleForNew">
+        <omgdc:Bounds height="80.00000000000006" width="100.0" x="183.33333819000825" y="360.00000000000006"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="contractDestroy" id="BPMNShape_contractDestroy">
+        <omgdc:Bounds height="80.0" width="100.0" x="796.2962939524465" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-427D0CB5-4D8B-4869-B3D6-F6D77241B3BD" id="BPMNShape_sid-427D0CB5-4D8B-4869-B3D6-F6D77241B3BD">
+        <omgdc:Bounds height="28.000000000000004" width="28.0" x="962.96296012854" y="25.999999999999996"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-8C835551-F5BE-4925-8D55-0E1802966770" id="BPMNShape_sid-8C835551-F5BE-4925-8D55-0E1802966770">
+        <omgdc:Bounds height="40.0" width="40.0" x="345.0" y="380.0000000000001"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="commenceContract" id="BPMNShape_commenceContract">
+        <omgdc:Bounds height="79.99999999999994" width="100.0" x="1397.1447830969867" y="304.83158903934253"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="calcCredit" id="BPMNShape_calcCredit">
+        <omgdc:Bounds height="80.00000000000011" width="100.0" x="420.0" y="360.00000000000006"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="assignTask" id="BPMNShape_assignTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="465.0" y="495.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkAudit" id="BPMNShape_checkAudit">
+        <omgdc:Bounds height="80.0" width="100.0" x="665.6461103402752" y="495.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-5A3738B5-213C-4E5D-B15D-C2B04FA2EE37" id="BPMNShape_sid-5A3738B5-213C-4E5D-B15D-C2B04FA2EE37">
+        <omgdc:Bounds height="28.0" width="28.0" x="1433.1447830969867" y="457.2473835590138"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-03E4F5ED-EEC8-4B4F-80C6-8DF7B7CB2561" id="BPMNShape_sid-03E4F5ED-EEC8-4B4F-80C6-8DF7B7CB2561">
+        <omgdc:Bounds height="40.0" width="40.0" x="807.7942580523581" y="410.94651688920976"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="additionalDocument" id="BPMNShape_additionalDocument">
+        <omgdc:Bounds height="80.0" width="100.0" x="1055.6241846059756" y="388.6602799483372"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="calcDecision" id="BPMNShape_calcDecision">
+        <omgdc:Bounds height="80.00000000000006" width="100.0" x="665.6461103402752" y="166.6666661760934"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-772FEF5B-3D04-4660-913A-5B78DCB81823" id="BPMNShape_sid-772FEF5B-3D04-4660-913A-5B78DCB81823">
+        <omgdc:Bounds height="40.0" width="40.0" x="883.3333567336759" y="200.00000000000006"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="assignCheckTask" id="BPMNShape_assignCheckTask">
+        <omgdc:Bounds height="79.99999999999994" width="100.00000000000011" x="983.3333593827714" y="180.00000000000006"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveAudit" id="BPMNShape_approveAudit">
+        <omgdc:Bounds height="80.0" width="100.0" x="1133.3333633564146" y="180.00000000000006"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-960B0E27-E3B5-4717-ADE1-6169A436E238" id="BPMNShape_sid-960B0E27-E3B5-4717-ADE1-6169A436E238">
+        <omgdc:Bounds height="40.0" width="40.0" x="1250.0000331136923" y="316.6666750554688"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-A01B4D24-7018-4623-A22A-463419E907D1" id="BPMNShape_sid-A01B4D24-7018-4623-A22A-463419E907D1">
+        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="116.66666975727793"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="accessRuleForOld" id="BPMNShape_accessRuleForOld">
+        <omgdc:Bounds height="79.99999999999999" width="100.0" x="165.0" y="96.66666975727792"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2" id="BPMNShape_sid-6CC25715-4236-4832-8BE9-5B19E2A30FE2">
+        <omgdc:Bounds height="39.999999999999986" width="40.0" x="300.0" y="116.66666975727794"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="handleResult" id="BPMNShape_handleResult">
+        <omgdc:Bounds height="79.99999999999994" width="100.0" x="766.6666869763981" y="247.4897220820909"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="handleAuto" id="BPMNShape_handleAuto">
+        <omgdc:Bounds height="80.0" width="100.0" x="1055.6241846059756" y="41.15226493570629"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="handleRefuse" id="BPMNShape_handleRefuse">
+        <omgdc:Bounds height="80.00000000000001" width="99.99999999999994" x="493.8271792284755" y="20.576132467853146"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="handleCredit" id="BPMNShape_handleCredit">
+        <omgdc:Bounds height="80.0" width="100.0" x="465.0" y="166.66666617609343"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendPassMessage" id="BPMNShape_sendPassMessage">
+        <omgdc:Bounds height="79.99999999999997" width="100.0" x="1300.0000344382402" y="182.89895526980573"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendRefuseMessage" id="BPMNShape_sendRefuseMessage">
+        <omgdc:Bounds height="80.0" width="100.0" x="637.8601065034475" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-EDA68592-2F0C-4E0C-B029-DA6B524C3434" id="BPMNEdge_sid-EDA68592-2F0C-4E0C-B029-DA6B524C3434">
+        <omgdi:waypoint x="922.9070001430164" y="220.42635659065965"></omgdi:waypoint>
+        <omgdi:waypoint x="983.3333593827714" y="220.19305018910114"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-246AAD72-8A5B-4C13-A4A4-C1B6F1D40382" id="BPMNEdge_sid-246AAD72-8A5B-4C13-A4A4-C1B6F1D40382">
+        <omgdi:waypoint x="1250.5000331136923" y="337.1666750554688"></omgdi:waypoint>
+        <omgdi:waypoint x="581.6186753159452" y="337.1666750554688"></omgdi:waypoint>
+        <omgdi:waypoint x="581.6186753159452" y="100.57613246785316"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-B951741E-8F96-43DD-976E-B46DA9168519" id="BPMNEdge_sid-B951741E-8F96-43DD-976E-B46DA9168519">
+        <omgdi:waypoint x="265.0" y="136.66666975727793"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="136.66666975727793"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-CFA9D5E6-CC63-402F-BBB8-5DA722D6710A" id="BPMNEdge_sid-CFA9D5E6-CC63-402F-BBB8-5DA722D6710A">
+        <omgdi:waypoint x="884.4598647276316" y="221.12650799395578"></omgdi:waypoint>
+        <omgdi:waypoint x="812.0713698930724" y="221.12650799395578"></omgdi:waypoint>
+        <omgdi:waypoint x="812.0713698930724" y="93.79675023578308"></omgdi:waypoint>
+        <omgdi:waypoint x="593.8271792284754" y="93.79675023578308"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A18166AA-225D-4D93-BAC2-76F4E4B60CC2" id="BPMNEdge_sid-A18166AA-225D-4D93-BAC2-76F4E4B60CC2">
+        <omgdi:waypoint x="828.2942580523581" y="411.44651688920976"></omgdi:waypoint>
+        <omgdi:waypoint x="828.2942580523581" y="400.00000000000017"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="400.00000000000017"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-66537E4A-1085-430D-8466-1B7331B40D8D" id="BPMNEdge_sid-66537E4A-1085-430D-8466-1B7331B40D8D">
+        <omgdi:waypoint x="1105.6241846059756" y="468.6602799483372"></omgdi:waypoint>
+        <omgdi:waypoint x="1105.6241846059756" y="535.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.6461103402752" y="535.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-CABAB627-529D-4D99-B794-2FF451F7CAF3" id="BPMNEdge_sid-CABAB627-529D-4D99-B794-2FF451F7CAF3">
+        <omgdi:waypoint x="737.8601065034475" y="40.0"></omgdi:waypoint>
+        <omgdi:waypoint x="796.2962939524465" y="40.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-67F07E67-2EDE-41D7-BC1F-531BBFDB2310" id="BPMNEdge_sid-67F07E67-2EDE-41D7-BC1F-531BBFDB2310">
+        <omgdi:waypoint x="593.8271792284754" y="40.0"></omgdi:waypoint>
+        <omgdi:waypoint x="637.8601065034475" y="40.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-11636DE8-977A-43F2-B437-9A87CAF394B6" id="BPMNEdge_sid-11636DE8-977A-43F2-B437-9A87CAF394B6">
+        <omgdi:waypoint x="320.5" y="156.16666975727793"></omgdi:waypoint>
+        <omgdi:waypoint x="320.5" y="557.3868307139172"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="557.3868307139172"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-FECC525D-3FA5-40A7-82E9-285A49442939" id="BPMNEdge_sid-FECC525D-3FA5-40A7-82E9-285A49442939">
+        <omgdi:waypoint x="903.8333567336759" y="200.50000000000006"></omgdi:waypoint>
+        <omgdi:waypoint x="903.8333567336759" y="80.9327857062726"></omgdi:waypoint>
+        <omgdi:waypoint x="1055.6241846059756" y="80.9327857062726"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-95870F77-7021-4A54-B367-36215145B723" id="BPMNEdge_sid-95870F77-7021-4A54-B367-36215145B723">
+        <omgdi:waypoint x="365.5" y="380.5000000000001"></omgdi:waypoint>
+        <omgdi:waypoint x="365.5" y="81.37174216452351"></omgdi:waypoint>
+        <omgdi:waypoint x="493.8271792284755" y="81.37174216452352"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8EC748D5-D322-4582-82CF-5B0049B9A024" id="BPMNEdge_sid-8EC748D5-D322-4582-82CF-5B0049B9A024">
+        <omgdi:waypoint x="1272.7252083653484" y="353.9414998038127"></omgdi:waypoint>
+        <omgdi:waypoint x="1272.7252083653484" y="565.5525477840295"></omgdi:waypoint>
+        <omgdi:waypoint x="765.6461103402752" y="565.5525477840295"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-537A3B8F-6B8D-459C-A3AC-2BA02386654B" id="BPMNEdge_sid-537A3B8F-6B8D-459C-A3AC-2BA02386654B">
+        <omgdi:waypoint x="1400.0000344382402" y="222.8989552698057"></omgdi:waypoint>
+        <omgdi:waypoint x="1447.1447830969867" y="222.8989552698057"></omgdi:waypoint>
+        <omgdi:waypoint x="1447.1447830969867" y="304.83158903934253"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-D745C3D6-2C86-416E-879F-DD817E381FC7" id="BPMNEdge_sid-D745C3D6-2C86-416E-879F-DD817E381FC7">
+        <omgdi:waypoint x="320.5" y="117.16666975727794"></omgdi:waypoint>
+        <omgdi:waypoint x="320.5" y="64.11522649357062"></omgdi:waypoint>
+        <omgdi:waypoint x="493.8271792284755" y="64.11522649357062"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-4B788522-F385-490E-A1DF-06CCF6FAB750" id="BPMNEdge_sid-4B788522-F385-490E-A1DF-06CCF6FAB750">
+        <omgdi:waypoint x="283.33333819000825" y="400.00000000000006"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="400.0000000000001"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8C2EB714-A533-482A-AF55-3EB11A0C9063" id="BPMNEdge_sid-8C2EB714-A533-482A-AF55-3EB11A0C9063">
+        <omgdi:waypoint x="459.5" y="137.16666975727793"></omgdi:waypoint>
+        <omgdi:waypoint x="715.6461103402752" y="137.16666975727793"></omgdi:waypoint>
+        <omgdi:waypoint x="715.6461103402752" y="166.6666661760934"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9926A9AF-4595-4F1D-BABC-7F0E193EF346" id="BPMNEdge_sid-9926A9AF-4595-4F1D-BABC-7F0E193EF346">
+        <omgdi:waypoint x="384.5" y="400.5000000000001"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="400.5000000000001"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-BA13F8F9-B1CF-4662-BD46-A661D937F87D" id="BPMNEdge_sid-BA13F8F9-B1CF-4662-BD46-A661D937F87D">
+        <omgdi:waypoint x="365.5" y="419.5000000000001"></omgdi:waypoint>
+        <omgdi:waypoint x="365.5" y="535.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="535.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-33D12A30-011A-414B-90D9-A38728150F7A" id="BPMNEdge_sid-33D12A30-011A-414B-90D9-A38728150F7A">
+        <omgdi:waypoint x="1155.6241846059756" y="81.15226493570628"></omgdi:waypoint>
+        <omgdi:waypoint x="1350.0000344382402" y="81.15226493570628"></omgdi:waypoint>
+        <omgdi:waypoint x="1350.0000344382402" y="182.89895526980573"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-213DACE9-5B0F-43DE-A95C-42BBB7D6B6A4" id="BPMNEdge_sid-213DACE9-5B0F-43DE-A95C-42BBB7D6B6A4">
+        <omgdi:waypoint x="125.0" y="335.0"></omgdi:waypoint>
+        <omgdi:waypoint x="125.0" y="520.0"></omgdi:waypoint>
+        <omgdi:waypoint x="183.33333819000825" y="520.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-2FF1CC00-9045-4FD0-A263-4CD86DE4EDC5" id="BPMNEdge_sid-2FF1CC00-9045-4FD0-A263-4CD86DE4EDC5">
+        <omgdi:waypoint x="1289.5000331136923" y="337.1666750554688"></omgdi:waypoint>
+        <omgdi:waypoint x="1350.0000344382402" y="337.1666750554688"></omgdi:waypoint>
+        <omgdi:waypoint x="1350.0000344382402" y="262.8989552698057"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-5AF300AA-B0EF-48F1-B9EF-41DA48DD2E52" id="BPMNEdge_sid-5AF300AA-B0EF-48F1-B9EF-41DA48DD2E52">
+        <omgdi:waypoint x="30.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="75.0" y="295.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-73CDA3B9-3484-4BD2-9BF9-218468851FAF" id="BPMNEdge_sid-73CDA3B9-3484-4BD2-9BF9-218468851FAF">
+        <omgdi:waypoint x="440.5" y="156.16666975727793"></omgdi:waypoint>
+        <omgdi:waypoint x="440.5" y="360.00000000000006"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8E33561C-4A56-4B8C-90CC-3A0EB5835A13" id="BPMNEdge_sid-8E33561C-4A56-4B8C-90CC-3A0EB5835A13">
+        <omgdi:waypoint x="866.6666869763981" y="287.4897220820909"></omgdi:waypoint>
+        <omgdi:waypoint x="903.3333567336759" y="287.4897220820909"></omgdi:waypoint>
+        <omgdi:waypoint x="903.3333567336759" y="240.00000000000006"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-342F47DE-5484-4E21-9EC2-0912C70CB83A" id="BPMNEdge_sid-342F47DE-5484-4E21-9EC2-0912C70CB83A">
+        <omgdi:waypoint x="1447.1447830969867" y="384.8315890393425"></omgdi:waypoint>
+        <omgdi:waypoint x="1447.1447830969867" y="457.2473835590138"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-2878EEF6-AC90-4700-9039-6585FA448467" id="BPMNEdge_sid-2878EEF6-AC90-4700-9039-6585FA448467">
+        <omgdi:waypoint x="125.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="125.0" y="136.6666697572779"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="136.6666697572779"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-23E7776C-83AF-443A-941B-0153B41A8C81" id="BPMNEdge_sid-23E7776C-83AF-443A-941B-0153B41A8C81">
+        <omgdi:waypoint x="1083.3333593827715" y="220.00000000000003"></omgdi:waypoint>
+        <omgdi:waypoint x="1133.3333633564146" y="220.00000000000006"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-CE77EEA5-B31E-418F-A708-16B94AB39D80" id="BPMNEdge_sid-CE77EEA5-B31E-418F-A708-16B94AB39D80">
+        <omgdi:waypoint x="339.5798319327731" y="137.0868378245048"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0833333333333" y="136.75000309061127"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-F30DCE41-E40D-457F-8FB2-C6876B4CE7F4" id="BPMNEdge_sid-F30DCE41-E40D-457F-8FB2-C6876B4CE7F4">
+        <omgdi:waypoint x="565.0" y="206.66666617609343"></omgdi:waypoint>
+        <omgdi:waypoint x="665.6461103402752" y="206.66666617609343"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-3322E196-D942-4F28-95B3-37E0C8943359" id="BPMNEdge_sid-3322E196-D942-4F28-95B3-37E0C8943359">
+        <omgdi:waypoint x="765.6461103402752" y="515.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.7942580523581" y="515.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.7942580523581" y="450.94651688920976"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-AE2A6A0F-BA11-45BD-8CF1-356833AF54BA" id="BPMNEdge_sid-AE2A6A0F-BA11-45BD-8CF1-356833AF54BA">
+        <omgdi:waypoint x="716.1635857212251" y="246.66666617609346"></omgdi:waypoint>
+        <omgdi:waypoint x="716.6666870117188" y="285.5555725097656"></omgdi:waypoint>
+        <omgdi:waypoint x="766.6666869763981" y="286.5226472955867"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-034CEFFC-7BC6-4888-96B7-79E7AE9EAA77" id="BPMNEdge_sid-034CEFFC-7BC6-4888-96B7-79E7AE9EAA77">
+        <omgdi:waypoint x="565.0" y="535.0"></omgdi:waypoint>
+        <omgdi:waypoint x="665.6461103402752" y="535.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-2457ACA9-A978-4283-A693-3EC88D98CE99" id="BPMNEdge_sid-2457ACA9-A978-4283-A693-3EC88D98CE99">
+        <omgdi:waypoint x="1233.3333633564146" y="220.00000000000006"></omgdi:waypoint>
+        <omgdi:waypoint x="1270.5000331136923" y="220.00000000000006"></omgdi:waypoint>
+        <omgdi:waypoint x="1270.5000331136923" y="317.1666750554688"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-B5CCC255-2B0C-40B4-8BBA-4701656A7716" id="BPMNEdge_sid-B5CCC255-2B0C-40B4-8BBA-4701656A7716">
+        <omgdi:waypoint x="896.2962939524465" y="40.0"></omgdi:waypoint>
+        <omgdi:waypoint x="962.96296012854" y="40.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-14FF865B-0897-423F-9552-09F5557470F9" id="BPMNEdge_sid-14FF865B-0897-423F-9552-09F5557470F9">
+        <omgdi:waypoint x="233.33333819000825" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="233.33333819000825" y="440.0000000000001"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-1C5EEA2A-9788-4DCC-A404-15AC41BFD97C" id="BPMNEdge_sid-1C5EEA2A-9788-4DCC-A404-15AC41BFD97C">
+        <omgdi:waypoint x="500.0000000000001" y="360.00000000000006"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0000000000001" y="246.66666617609343"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-4ABC0024-ECC5-41AE-986C-47DE596D5B82" id="BPMNEdge_sid-4ABC0024-ECC5-41AE-986C-47DE596D5B82">
+        <omgdi:waypoint x="847.4870816497654" y="431.25369329180256"></omgdi:waypoint>
+        <omgdi:waypoint x="1055.6241846059756" y="429.16261249057254"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

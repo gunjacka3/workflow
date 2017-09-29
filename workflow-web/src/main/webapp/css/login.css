@@ -1,0 +1,137 @@
+
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	font-family: "微软雅黑";
+}
+body{
+	background:#f2f2f2;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+	font-style: normal;
+	font-weight: normal;
+}
+ol,ul {
+	list-style: none;
+}
+caption,th {
+	text-align: left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+a {
+	text-decoration: none;
+}
+input::-ms-clear {
+	display: none;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+	clear: both;
+}
+.clearfix{zoom:1;}
+.fl{float:left;}
+.fr{float:right;}
+.login{
+	width:362px;
+	height:450px;
+	border-radius:4px;
+	background:#fff;
+	box-shadow:3px 3px 5px #ccc;
+	margin:194px auto 30px;
+}
+.login .logo{
+	width:107px;
+	height:34px;
+	margin:0 auto;
+	padding-top:25px;
+}
+.login .u-form{
+	width:300px;
+	margin:0 auto;
+	color:#777;
+	position:relative;
+}
+.login .u-form p{
+	height:23px;
+	line-height:23px;
+}
+.login .u-form .text{
+	border-color: #bbb;
+	height: 38px;
+	line-height:38px;
+	font-size: 14px;
+	border-radius: 2px;
+	outline: 0;
+	border: #ccc 1px solid;
+	padding: 0 10px;
+	width: 278px;
+	-webkit-transition: box-shadow .5s;
+	margin-bottom: 15px;
+	display:block;
+}
+.login .u-form .u-list{
+	width:278px;
+	border:1px solid #bbb;
+	position:absolute;
+	top:62px;
+	z-index:3;
+	background:#fff;
+	padding:0 10px;
+	display:none;
+}
+.login .cur .u-list{
+	display:block;
+}
+.login .cur .u-list li{
+	height:28px;
+	line-height:28px;
+	cursor:pointer;
+}
+.login .s-btn{
+	background:#3f89ec;
+	width:300px;
+	height:42px;
+	line-height:42px;
+	font-size:20px;
+	display:block;
+	color:#fff;
+	outline:0;
+	border:0;
+	margin:10px auto 0;
+	cursor:pointer;
+}
+
+input[type=text], input[type=password] {
+	border-color: #bbb;
+	height: 38px;
+	font-size: 14px;
+	border-radius: 2px;
+	outline: 0;
+	border: #ccc 1px solid;
+	padding: 0 10px;
+	width: 278px;
+	-webkit-transition: box-shadow .5s;
+	margin-bottom: 15px;
+}
+
+input[type=text]:hover,  input[type=text]:focus, input[type=password]:hover,  input[type=password]:focus {
+	border: 1px solid #56b4ef;
+	box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(82,168,236,.6);
+	-webkit-transition: box-shadow .5s;
+}
+input::-webkit-input-placeholder {
+	color: #999;
+	-webkit-transition: color .5s;
+}
+
+input:focus::-webkit-input-placeholder,  input:hover::-webkit-input-placeholder {
+	color: #c2c2c2;
+	-webkit-transition: color .5s;
+}

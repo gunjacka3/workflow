@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.workflow.mybatis.client.TbSysSecurityPositionsMapper" >
+  <resultMap id="BaseResultMap" type="cn.com.workflow.mybatis.model.TbSysSecurityPositions" >
+    <id column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
+    <result column="POSITION_NAME" property="positionName" jdbcType="VARCHAR" />
+    <result column="POSITION_CD" property="positionCd" jdbcType="VARCHAR" />
+    <result column="ORG_GRADE" property="orgGrade" jdbcType="VARCHAR" />
+    <result column="MAINTAIN_ID" property="maintainId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="DELFLAG" property="delflag" jdbcType="VARCHAR" />
+    <result column="TRUNC_NO" property="truncNo" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    POSITION_ID, POSITION_NAME, POSITION_CD, ORG_GRADE, MAINTAIN_ID, CREATE_TIME, UPDATE_TIME, 
+    DELFLAG, TRUNC_NO
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sys_security_positions
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_sys_security_positions
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.workflow.mybatis.model.TbSysSecurityPositions" >
+    insert into tb_sys_security_positions (POSITION_ID, POSITION_NAME, POSITION_CD, 
+      ORG_GRADE, MAINTAIN_ID, CREATE_TIME, 
+      UPDATE_TIME, DELFLAG, TRUNC_NO
+      )
+    values (#{positionId,jdbcType=VARCHAR}, #{positionName,jdbcType=VARCHAR}, #{positionCd,jdbcType=VARCHAR}, 
+      #{orgGrade,jdbcType=VARCHAR}, #{maintainId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{delflag,jdbcType=VARCHAR}, #{truncNo,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.workflow.mybatis.model.TbSysSecurityPositions" >
+    insert into tb_sys_security_positions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="positionId != null" >
+        POSITION_ID,
+      </if>
+      <if test="positionName != null" >
+        POSITION_NAME,
+      </if>
+      <if test="positionCd != null" >
+        POSITION_CD,
+      </if>
+      <if test="orgGrade != null" >
+        ORG_GRADE,
+      </if>
+      <if test="maintainId != null" >
+        MAINTAIN_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="delflag != null" >
+        DELFLAG,
+      </if>
+      <if test="truncNo != null" >
+        TRUNC_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null" >
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionCd != null" >
+        #{positionCd,jdbcType=VARCHAR},
+      </if>
+      <if test="orgGrade != null" >
+        #{orgGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="maintainId != null" >
+        #{maintainId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delflag != null" >
+        #{delflag,jdbcType=VARCHAR},
+      </if>
+      <if test="truncNo != null" >
+        #{truncNo,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.workflow.mybatis.model.TbSysSecurityPositions" >
+    update tb_sys_security_positions
+    <set >
+      <if test="positionName != null" >
+        POSITION_NAME = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionCd != null" >
+        POSITION_CD = #{positionCd,jdbcType=VARCHAR},
+      </if>
+      <if test="orgGrade != null" >
+        ORG_GRADE = #{orgGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="maintainId != null" >
+        MAINTAIN_ID = #{maintainId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delflag != null" >
+        DELFLAG = #{delflag,jdbcType=VARCHAR},
+      </if>
+      <if test="truncNo != null" >
+        TRUNC_NO = #{truncNo,jdbcType=INTEGER},
+      </if>
+    </set>
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.workflow.mybatis.model.TbSysSecurityPositions" >
+    update tb_sys_security_positions
+    set POSITION_NAME = #{positionName,jdbcType=VARCHAR},
+      POSITION_CD = #{positionCd,jdbcType=VARCHAR},
+      ORG_GRADE = #{orgGrade,jdbcType=VARCHAR},
+      MAINTAIN_ID = #{maintainId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      DELFLAG = #{delflag,jdbcType=VARCHAR},
+      TRUNC_NO = #{truncNo,jdbcType=INTEGER}
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </update>
+</mapper>
