@@ -19,7 +19,7 @@
 
 ### 技术选型
 
-####后端
+#### 后端
 + 核心框架：Spring Framework 4.0
 + 安全框架：spring security
 + 视图框架：Spring MVC 4.0
@@ -31,12 +31,12 @@
 + 日志管理：SLF4J 1.7、Log4j2
 + 工具类：Apache Commons、Jackson 2.2、POI
 
-####前端
+#### 前端
 + JS框架：JQuery 1.9。
 + CSS框架：Twitter Bootstrap 3。
 + 客户端验证：JQuery Validation Plugin 1.11。
 
-####平台
+#### 平台
 + 服务器中间件：在Java EE 5规范（Servlet 2.5、JSP 2.1）下开发，支持应用服务器中间件
 有Tomcat 6+、Jboss 7、WebLogic 10、WebSphere 8。
 + 数据库支持：OracleSqlServer 2008、MySql 5.5、H2
