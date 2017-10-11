@@ -35,7 +35,10 @@
 + JS框架：JQuery 1.9。
 + CSS框架：Twitter Bootstrap 3。
 + 客户端验证：JQuery Validation Plugin 1.11。
+<<<<<<< HEAD
 + restful接口展现：swagger
+=======
+>>>>>>> branch 'master' of https://github.com/gunjacka3/workflow.git
 
 #### 平台
 + 服务器中间件：在Java EE 5规范（Servlet 2.5、JSP 2.1）下开发，支持应用服务器中间件
