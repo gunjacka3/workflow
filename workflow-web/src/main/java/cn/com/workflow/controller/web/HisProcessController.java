@@ -26,6 +26,8 @@ import cn.com.workflow.common.vo.ActHisTaskListPage;
 import cn.com.workflow.common.vo.condition.WorkListCondition;
 import cn.com.workflow.service.QueryWorkListService;
 import cn.com.workflow.user.Users;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 历史流程实例控制器 Package : cn.com.workflow.controller.web
@@ -35,6 +37,7 @@ import cn.com.workflow.user.Users;
  */
 @Controller
 @RequestMapping(value = "/hisProcess")
+@Api(value = "/hisProcess", tags = "历史流程实例服务类接口")
 public class HisProcessController extends BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(HisProcessController.class);
@@ -52,6 +55,7 @@ public class HisProcessController extends BaseController {
      * @throws BpmException
      */
     @RequestMapping(value = "/initList")
+    @ApiOperation(value = "init", notes = "历史流程页面初始化", httpMethod = "POST", response = HisProcessController.class)
     public ModelAndView init(@ModelAttribute("user") Users user, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("init");
@@ -74,7 +78,8 @@ public class HisProcessController extends BaseController {
      * @return
      * @throws BpmException
      */
-    @RequestMapping(value = "/showList", method = RequestMethod.POST)
+    @RequestMapping(value = "/showList")
+    @ApiOperation(value = "showList", notes = "历史流程页面列表查询", httpMethod = "POST", response = HisProcessController.class)
     public ModelAndView showList(@ModelAttribute("user") Users user, WorkListCondition condition,
             HttpServletRequest request, HttpServletResponse response, Model model) throws BpmException {
         Map<String, Object> map = object2map(condition);
@@ -108,6 +113,7 @@ public class HisProcessController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/view/{processId}")
+    @ApiOperation(value = "handleTask", notes = "查询历史详细", httpMethod = "POST", response = HisProcessController.class)
     public ModelAndView handleTask(@PathVariable("processId") String processId, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("processId===={}", processId);
@@ -129,6 +135,7 @@ public class HisProcessController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/viewMeeting/{processId}")
+    @ApiOperation(value = "handleMeetingTask", notes = "查询最近的会议记录", httpMethod = "POST", response = HisProcessController.class)
     public ModelAndView handleMeetingTask(@PathVariable("processId") String processId, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("processId===={}", processId);

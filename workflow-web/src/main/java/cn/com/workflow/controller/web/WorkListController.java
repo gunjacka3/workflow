@@ -26,6 +26,8 @@ import cn.com.workflow.common.vo.condition.WorkListCondition;
 import cn.com.workflow.service.QueryWorkListService;
 import cn.com.workflow.service.TaskService_;
 import cn.com.workflow.user.Users;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 工作队列控制 Package : cn.com.workflow.controller.web
@@ -35,6 +37,7 @@ import cn.com.workflow.user.Users;
  */
 @Controller
 @RequestMapping(value = "/worklist")
+@Api(value = "/worklist", tags = "工作队列服务类接口")
 public class WorkListController extends BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(WorkListController.class);
@@ -56,6 +59,7 @@ public class WorkListController extends BaseController {
      */
     @RequestMapping(value = "/initCandiWorkList")
     @ResponseBody
+    @ApiOperation(value = "initCandiWorkList", notes = "初始化待分配列表", httpMethod = "POST", response = WorkListController.class)
     public ModelAndView initCandiWorkList(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         Map map = new HashMap();
@@ -84,8 +88,9 @@ public class WorkListController extends BaseController {
      * @return
      * @throws BpmException
      */
-    @RequestMapping(value = "/queryCandiWorkList", headers = "Accept=application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryCandiWorkList")
     @ResponseBody
+    @ApiOperation(value = "queryCandiWorkList", notes = "待分配列表过滤查询", httpMethod = "POST", response = WorkListController.class)
     public ModelAndView queryCandiWorkList(WorkListCondition condition, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         Map<String, Object> map = object2map(condition);
@@ -119,6 +124,7 @@ public class WorkListController extends BaseController {
      */
     @RequestMapping(value = "/take/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "take", notes = "待分配列表领取任务", httpMethod = "POST", response = WorkListController.class)
     public void take(@PathVariable String taskId, HttpServletRequest request, HttpServletResponse response, Model model)
             throws ActivitiException {
         Map map = new HashMap();
@@ -139,6 +145,7 @@ public class WorkListController extends BaseController {
      */
     @RequestMapping(value = "/initWorkList")
     @ResponseBody
+    @ApiOperation(value = "initWorkList", notes = "待办任务列表初始化", httpMethod = "POST", response = WorkListController.class)
     public ModelAndView initWorkList(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         Map map = new HashMap();
@@ -166,8 +173,9 @@ public class WorkListController extends BaseController {
      * @return
      * @throws BpmException
      */
-    @RequestMapping(value = "/queryWorkList", headers = "Accept=application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryWorkList")
     @ResponseBody
+    @ApiOperation(value = "queryWorkList", notes = "待办任务列表过滤查询", httpMethod = "POST", response = WorkListController.class)
     public ModelAndView queryWorkList(WorkListCondition condition, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         Map<String, Object> map = object2map(condition);
@@ -201,6 +209,7 @@ public class WorkListController extends BaseController {
      */
     @RequestMapping(value = "/initSuspendList")
     @ResponseBody
+    @ApiOperation(value = "initSuspendList", notes = "初始化挂起 任务列表", httpMethod = "POST", response = WorkListController.class)
     public ModelAndView initSuspendList(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         Map map = new HashMap();

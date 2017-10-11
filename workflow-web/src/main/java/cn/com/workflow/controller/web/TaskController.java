@@ -29,6 +29,8 @@ import cn.com.workflow.common.vo.ActiveNode;
 import cn.com.workflow.common.vo.SelectUserInfos;
 import cn.com.workflow.service.TaskService_;
 import cn.com.workflow.user.Users;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 工作任务控制器 Package : cn.com.workflow.controller.web
@@ -38,6 +40,7 @@ import cn.com.workflow.user.Users;
  */
 @Controller
 @RequestMapping(value = "/task")
+@Api(value = "/task", tags = "任务服务类接口")
 public class TaskController extends BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(TaskController.class);
@@ -61,6 +64,7 @@ public class TaskController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午3:59:14
      */
     @RequestMapping(value = "/handle/{taskId}")
+    @ApiOperation(value = "handleTask", notes = "根据任务id获取任务信息", httpMethod = "GET", response = TaskController.class)
     public ModelAndView handleTask(@PathVariable("taskId") String taskId, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("handleTask taskId===={}", taskId);
@@ -102,6 +106,7 @@ public class TaskController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午3:59:57
      */
     @RequestMapping(value = "/handleBatch/{taskIds}")
+    @ApiOperation(value = "handleBatchTask", notes = "任务批量领取,格式:id1,id2", httpMethod = "POST", response = TaskController.class)
     public ModelAndView handleBatchTask(@PathVariable("taskIds") String taskIds, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("taskIds===={}", taskIds);
@@ -147,6 +152,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/retrieve/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "retrieveTask", notes = "根据任务id取回任务", httpMethod = "POST", response = TaskController.class)
     public void retrieveTask(@PathVariable("taskId") String taskId, @ModelAttribute("user") Users user,
             HttpServletRequest request, HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("retrieveTask taskId===={}", taskId);
@@ -166,6 +172,7 @@ public class TaskController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午4:00:33
      */
     @RequestMapping(value = "/turn/{taskId}")
+    @ApiOperation(value = "turn", notes = "根据任务id转派任务", httpMethod = "POST", response = TaskController.class)
     public ModelAndView turn(@PathVariable("taskId") String taskId, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("turn taskId===={}", taskId);
@@ -197,6 +204,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/delegate/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "delegateTask", notes = "根据任务id和用户信息设置任务代理", httpMethod = "POST", response = TaskController.class)
     public void delegateTask(@PathVariable("taskId") String taskId, @RequestBody String parms,
             @ModelAttribute("user") Users user, HttpServletRequest request, HttpServletResponse response)
             throws BpmException {
@@ -229,6 +237,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/replace/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "replaceTask", notes = "取消已领取的任务将其退回共享池", httpMethod = "POST", response = TaskController.class)
     public void replaceTask(@PathVariable("taskId") String taskId, @RequestBody String parms,
             HttpServletRequest request, HttpServletResponse response) throws BpmException {
         LOGGER.debug("taskId===={}", taskId);
@@ -259,6 +268,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/batch/{taskIds}")
     @ResponseBody
+    @ApiOperation(value = "submitBatch", notes = "根据任务id批量提交任务,格式为:id1,id2...", httpMethod = "POST", response = TaskController.class)
     public void submitBatch(@PathVariable("taskIds") String taskIds, @RequestBody String parms,
             @ModelAttribute("user") Users user, HttpServletRequest request, HttpServletResponse response)
             throws BpmException {
@@ -304,6 +314,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/submit/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "submitForForm", notes = "根据任务id提交任务", httpMethod = "POST", response = TaskController.class)
     public void submitForForm(@PathVariable("taskId") String taskId, @RequestBody String parms,
             @ModelAttribute("user") Users user, HttpServletRequest request, HttpServletResponse response)
             throws BpmException {
@@ -342,6 +353,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/submitByBack/{type}/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "submitByBack", notes = "根据任务id提交需退回的任务", httpMethod = "POST", response = TaskController.class)
     public void submitByBack(@PathVariable("type") String type, @PathVariable("taskId") String taskId,
             @RequestBody String parms, @ModelAttribute("user") Users user, HttpServletRequest request,
             HttpServletResponse response) throws BpmException {
@@ -375,6 +387,7 @@ public class TaskController extends BaseController {
      */
     @RequestMapping(value = "/save/{taskId}")
     @ResponseBody
+    @ApiOperation(value = "save", notes = "根据任务id临时保存任务", httpMethod = "POST", response = TaskController.class)
     public void save(@PathVariable("taskId") String taskId, @RequestBody String parms,
             @ModelAttribute("user") Users user, HttpServletRequest request, HttpServletResponse response)
             throws BpmException {
@@ -407,6 +420,7 @@ public class TaskController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午4:11:21
      */
     @RequestMapping(value = "/findNextActivityUserInfo/{taskId}")
+    @ApiOperation(value = "findNextActivityUserInfo", notes = "根据任务id查询下一个人工任务节点", httpMethod = "POST", response = TaskController.class)
     public ModelAndView findNextActivityUserInfo(@PathVariable("taskId") String taskId, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("taskId===={}", taskId);
@@ -434,6 +448,7 @@ public class TaskController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午4:11:47
      */
     @RequestMapping(value = "/readActity/{taskId}")
+    @ApiOperation(value = "readActity", notes = "根据任务id读取当前节点信息", httpMethod = "POST", response = TaskController.class)
     public ModelAndView readActity(@PathVariable("taskId") String taskId, HttpServletResponse response, Model model)
             throws Exception {
         List<ActiveNode> list4 = new ArrayList<>();
@@ -460,6 +475,7 @@ public class TaskController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午4:12:02
      */
     @RequestMapping(value = "/readResource/{taskId}")
+    @ApiOperation(value = "readResource", notes = "根据任务id读取流程图资源文件", httpMethod = "POST", response = TaskController.class)
     public void readResource(@PathVariable("taskId") String taskId, HttpServletResponse response) throws Exception {
 
         InputStream imageStream = taskService_.readRunResource(taskId);

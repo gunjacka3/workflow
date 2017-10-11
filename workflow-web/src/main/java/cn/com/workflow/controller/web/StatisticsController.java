@@ -16,6 +16,8 @@ import cn.com.workflow.common.exception.BpmException;
 import cn.com.workflow.common.vo.chart.ActInstanceStatistcsEchartsVO;
 import cn.com.workflow.service.StatisticsService;
 import cn.com.workflow.user.Users;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 系统信息报表控制器 Package : cn.com.workflow.controller.web
@@ -25,6 +27,7 @@ import cn.com.workflow.user.Users;
  */
 @Controller
 @RequestMapping(value = "/statistics")
+@Api(value = "/statistics", tags = "系统信息服务类接口")
 public class StatisticsController extends BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(StatisticsController.class);
@@ -44,6 +47,7 @@ public class StatisticsController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午4:14:08
      */
     @RequestMapping(value = "/findProcessInstanceCount")
+    @ApiOperation(value = "findProcessInstanceCount", notes = "查询流程实例总数", httpMethod = "POST", response = StatisticsController.class)
     public ModelAndView findProcessInstanceCount(@ModelAttribute("user") Users user, HttpServletRequest request,
             HttpServletResponse response, Model model) throws BpmException {
         LOGGER.debug("findProcessInstanceCount");

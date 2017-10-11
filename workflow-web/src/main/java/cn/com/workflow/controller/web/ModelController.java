@@ -6,9 +6,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -26,11 +28,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import cn.com.workflow.common.Page;
 import cn.com.workflow.common.exception.BpmException;
 import cn.com.workflow.common.vo.ActDefinitionPage;
 import cn.com.workflow.common.vo.ModelExportVO;
 import cn.com.workflow.service.ProcessDefinitionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 在线模板设计器操作控制器 Package : cn.com.workflow.controller.web
@@ -40,6 +45,7 @@ import cn.com.workflow.service.ProcessDefinitionService;
  */
 @Controller
 @RequestMapping(value = "/model")
+@Api(value = "/model", tags = "流程模型服务类接口")
 public class ModelController extends BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(ModelController.class);
@@ -57,6 +63,7 @@ public class ModelController extends BaseController {
      * @throws BpmException
      */
     @RequestMapping(value = "/initDefinition")
+    @ApiOperation(value = "init", notes = "流程模型列表页面初始化", httpMethod = "POST", response = ModelController.class)
     public ModelAndView init(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         ActDefinitionPage adp = null;
@@ -84,7 +91,8 @@ public class ModelController extends BaseController {
      * @return
      * @throws BpmException
      */
-    @RequestMapping(value = "/showList", method = RequestMethod.GET)
+    @RequestMapping(value = "/showList")
+    @ApiOperation(value = "showList", notes = "流程模型列表页面查询", httpMethod = "GET", response = ModelController.class)
     public ModelAndView showList(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         String pageNo = request.getParameter("pageNo");
@@ -116,9 +124,10 @@ public class ModelController extends BaseController {
      * @param response
      * @param model
      */
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove")
     @ResponseBody
-    public void delete(@RequestBody String modelId, HttpServletRequest request, HttpServletResponse response,
+    @ApiOperation(value = "remove", notes = "删除bpm model", httpMethod = "POST", response = ModelController.class)
+    public void remove(@RequestBody String modelId, HttpServletRequest request, HttpServletResponse response,
             Model model) {
         LOGGER.debug("modelId====" + modelId);
         processDefinitionService.deleteModel(modelId, false);
@@ -135,6 +144,7 @@ public class ModelController extends BaseController {
      */
     @RequestMapping(value = "/pic/{modelId}")
     @ResponseBody
+    @ApiOperation(value = "pic", notes = "展现 流程图", httpMethod = "POST", response = ModelController.class)
     public void pic(@PathVariable("modelId") String modelId, HttpServletRequest request, HttpServletResponse response,
             Model model) throws BpmException {
         InputStream is = processDefinitionService.readPictrueStream(modelId);
@@ -170,6 +180,7 @@ public class ModelController extends BaseController {
      */
     @RequestMapping(value = "/deploy")
     @ResponseBody
+    @ApiOperation(value = "deploy", notes = "根据Model部署流程", httpMethod = "POST", response = ModelController.class)
     public void deploy(@RequestBody String modelId, RedirectAttributes redirectAttributes) throws BpmException {
         processDefinitionService.deploymentModel(modelId);
     }
@@ -186,6 +197,7 @@ public class ModelController extends BaseController {
      */
     @RequestMapping(value = "/create")
     @ResponseBody
+    @ApiOperation(value = "create", notes = "通过activiti modeler新建流程图", httpMethod = "POST", response = ModelController.class)
     public String create(@RequestBody String parms, HttpServletRequest request, HttpServletResponse response)
             throws BpmException {
         try {
@@ -217,6 +229,7 @@ public class ModelController extends BaseController {
      */
     @RequestMapping(value = "/export/{modelId}/{type}")
     @ResponseBody
+    @ApiOperation(value = "export", notes = "导出bpm model对应的bpmn文件或json文件", httpMethod = "POST", response = ModelController.class)
     public void export(@PathVariable("modelId") String modelId, @PathVariable("type") String type,
             HttpServletResponse response) {
         try {
@@ -240,6 +253,7 @@ public class ModelController extends BaseController {
      * @throws BpmException
      */
     @RequestMapping("/upload")
+    @ApiOperation(value = "upload", notes = "上传bpmn文件", httpMethod = "POST", response = ModelController.class)
     public ModelAndView upload(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         javax.servlet.ServletContext sc = request.getSession().getServletContext();
@@ -286,20 +300,4 @@ public class ModelController extends BaseController {
         return init(request, response, model);
     }
 
-    // @Deprecated
-    // @SuppressWarnings("unused")
-    // public static void inputstreamTofile(InputStream ins,File file) {
-    // try {
-    // OutputStream os = new FileOutputStream(file);
-    // int bytesRead = 0;
-    // byte[] buffer = new byte[8192];
-    // while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-    // os.write(buffer, 0, bytesRead);
-    // }
-    // os.close();
-    // ins.close();
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
 }

@@ -32,6 +32,8 @@ import cn.com.workflow.common.vo.ActFromVO;
 import cn.com.workflow.common.vo.ModelExportVO;
 import cn.com.workflow.service.ProcessDefinitionService;
 import cn.com.workflow.service.ProcessService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 流程定义控制器 Package : cn.com.workflow.controller.web
@@ -41,6 +43,7 @@ import cn.com.workflow.service.ProcessService;
  */
 @Controller
 @RequestMapping(value = "/proDef")
+@Api(value = "/proDef", tags = "流程定义服务类接口")
 public class ProcessDefController extends BaseController {
     private static final Logger LOGGER = LogManager.getLogger(ProcessDefController.class);
     @Autowired(required = true)
@@ -59,6 +62,7 @@ public class ProcessDefController extends BaseController {
      * @throws BpmException
      */
     @RequestMapping(value = "/initDefinition")
+    @ApiOperation(value = "init", notes = "流程定义页面初始化", httpMethod = "POST", response = ProcessDefController.class)
     public ModelAndView init(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         ActDefinitionPage adp = null;
@@ -84,7 +88,8 @@ public class ProcessDefController extends BaseController {
      * @return
      * @throws BpmException
      */
-    @RequestMapping(value = "/showList", method = RequestMethod.GET)
+    @RequestMapping(value = "/showList")
+    @ApiOperation(value = "showList", notes = "流程定义页面列表查询", httpMethod = "GET", response = ProcessDefController.class)
     public ModelAndView showList(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         String pageNo = request.getParameter("pageNo");
@@ -120,6 +125,7 @@ public class ProcessDefController extends BaseController {
      * @author wangzhiyin 2017年9月22日 下午4:16:16
      */
     @RequestMapping(value = "/start/{pdfId}/{pdfKey}")
+    @ApiOperation(value = "startProcess", notes = "启动流程", httpMethod = "POST", response = ProcessDefController.class)
     public ModelAndView startProcess(@PathVariable("pdfId") String pdfId, @PathVariable("pdfKey") String pdfKey,
             HttpServletRequest request, HttpServletResponse response, Model model) {
         LOGGER.debug("pdfId====" + pdfId);
@@ -144,9 +150,10 @@ public class ProcessDefController extends BaseController {
      * @param response
      * @param model
      */
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @RequestMapping(value = "/remove")
     @ResponseBody
-    public void delete(@RequestBody String deploymentId, HttpServletRequest request, HttpServletResponse response,
+    @ApiOperation(value = "remove", notes = "删除已部署流程", httpMethod = "POST", response = ProcessDefController.class)
+    public void remove(@RequestBody String deploymentId, HttpServletRequest request, HttpServletResponse response,
             Model model) {
         LOGGER.debug("deploymentId====" + deploymentId);
         processDefinitionService.deleteDeployment(deploymentId, true);
@@ -163,6 +170,7 @@ public class ProcessDefController extends BaseController {
      */
     @RequestMapping(value = "/pic/{pefId}")
     @ResponseBody
+    @ApiOperation(value = "pic", notes = "展现 流程图", httpMethod = "POST", response = ProcessDefController.class)
     public void pic(@PathVariable("pefId") String pefId, HttpServletRequest request, HttpServletResponse response,
             Model model) throws BpmException {
         InputStream is = processDefinitionService.readPictrueStreamForPdf(pefId);
@@ -198,6 +206,7 @@ public class ProcessDefController extends BaseController {
      */
     @RequestMapping(value = "/deploy")
     @ResponseBody
+    @ApiOperation(value = "deploy", notes = "根据Model部署流程", httpMethod = "POST", response = ProcessDefController.class)
     public void deploy(@RequestBody String modelId, RedirectAttributes redirectAttributes) throws BpmException {
         processDefinitionService.deploymentModel(modelId);
     }
@@ -213,6 +222,7 @@ public class ProcessDefController extends BaseController {
      * @throws BpmException
      */
     @RequestMapping(value = "/create")
+    @ApiOperation(value = "createModel", notes = "通过activiti modeler新建流程图", httpMethod = "POST", response = ProcessDefController.class)
     public void createModel(@RequestParam("name") String name, @RequestParam("key") String key,
             @RequestParam("description") String description, HttpServletRequest request, HttpServletResponse response)
             throws BpmException {
@@ -235,6 +245,7 @@ public class ProcessDefController extends BaseController {
      */
     @RequestMapping(value = "/export/{pdId}/{type}")
     @ResponseBody
+    @ApiOperation(value = "export", notes = "导出bpm model对应的bpmn文件或json文件", httpMethod = "POST", response = ProcessDefController.class)
     public void export(@PathVariable("pdId") String pdId, @PathVariable("type") String type,
             HttpServletResponse response) {
         try {
@@ -258,6 +269,7 @@ public class ProcessDefController extends BaseController {
      * @throws BpmException
      */
     @RequestMapping("/upload")
+    @ApiOperation(value = "upload", notes = "上传bpmn文件", httpMethod = "POST", response = ProcessDefController.class)
     public ModelAndView upload(HttpServletRequest request, HttpServletResponse response, Model model)
             throws BpmException {
         javax.servlet.ServletContext sc = request.getSession().getServletContext();
@@ -304,31 +316,6 @@ public class ProcessDefController extends BaseController {
         return init(request, response, model);
     }
 
-    // /**
-    // *
-    // *
-    // * @param ins
-    // * @param file
-    // * @author wangzhiyin
-    // * 2017年9月22日 下午4:21:04
-    // */
-    // @Deprecated
-    // @SuppressWarnings("unused")
-    // public static void inputstreamTofile(InputStream ins,File file) {
-    // try {
-    // OutputStream os = new FileOutputStream(file);
-    // int bytesRead = 0;
-    // byte[] buffer = new byte[8192];
-    // while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-    // os.write(buffer, 0, bytesRead);
-    // }
-    // os.close();
-    // ins.close();
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-
     /**
      * 下载流程图
      * 
@@ -338,6 +325,7 @@ public class ProcessDefController extends BaseController {
      */
     @RequestMapping(value = "/download")
     @ResponseBody
+    @ApiOperation(value = "download", notes = "下载流程图", httpMethod = "POST", response = ProcessDefController.class)
     public void download(HttpServletRequest request, HttpServletResponse response) throws BpmException {
         ModelExportVO mev = processDefinitionService.exportAllTemplate(request);
         ByteArrayInputStream in = new ByteArrayInputStream(mev.getProcessDef());

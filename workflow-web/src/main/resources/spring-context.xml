@@ -131,7 +131,7 @@
 	<import resource="classpath*:applicationContext-async.xml" />
 	<import resource="classpath*:applicationContext-security.xml" />
 	<import resource="classpath*:applicationContext-mybatis.xml" />
-	<import resource="classpath*:applicationContext-ws.xml" />
+	<!-- <import resource="classpath*:applicationContext-ws.xml" /> -->
 	<import resource="classpath*:applicationContext-ldap.xml" />
 
 </beans>

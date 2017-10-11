@@ -143,13 +143,19 @@
                         <li>
                            	<a href="javascript:;" title="">
                                 <i class="glyph-icon icon-dashboard"></i>
-                                	统计分析
+                                	平台信息
                             </a>
  							<ul>
                                 <li>
-                                    <a id="candi" href="<%=basePath %>statistics/findProcessInstanceCount.do" title="待分配任务" data-toggle="tab">
+                                    <a id="candi" href="<%=basePath %>statistics/findProcessInstanceCount.do" title="实例统计" data-toggle="tab">
                                         <i class="glyph-icon icon-chevron-right"></i>
                                        	 流程实例
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="candi" href="<%=basePath %>swagger-ui.html" title="对外服务" data-toggle="tab">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                       	 对外服务
                                     </a>
                                 </li>
                             </ul>
