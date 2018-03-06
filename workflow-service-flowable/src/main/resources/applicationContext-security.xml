@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:security="http://www.springframework.org/schema/security"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+            http://www.springframework.org/schema/security   
+            http://www.springframework.org/schema/security/spring-security-3.2.xsd">  
+      
+    <!--  Spring-Security 的配置 -->  
+    <security:http auto-config="true" use-expressions="true">  
+    
+      	<security:intercept-url pattern="/pages/login" access="permitAll"/>
+        <security:intercept-url pattern="/example/*" access="hasRole('ROLE_USER')"/>  
+        <security:intercept-url pattern="/pages/*" access="hasRole('ROLE_USER')"/>   
+         
+       <!--  <security:intercept-url pattern="/page/*" access="permitAll"/>   -->
+        <security:form-login  
+                login-page="/bootstrap3/login.jsp" 
+                authentication-failure-url="/bootstrap3/login.jsp" 
+                default-target-url="/LogServlet" />  
+              
+        <security:logout   
+                invalidate-session="true"   
+                logout-success-url="/bootstrap3/login.jsp" 
+                logout-url="/logout"/>  
+        <!-- access-denied-page="/pages/login/deniedpage.jsp"  -->
+        <security:access-denied-handler error-page="/bootstrap3/login.jsp" />
+        
+	  <security:session-management session-fixation-protection="none" invalid-session-url="/bootstrap3/login.jsp">  
+	    <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/bootstrap3/login.jsp"/>  
+	  </security:session-management>       
+      
+    </security:http>  
+      
+	<security:authentication-manager >  
+	    <security:authentication-provider ref="authenticationProvider" />  
+	</security:authentication-manager>  
+  
+	<bean id="authenticationProvider"  
+	    class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">  
+	    <property name="userDetailsService" ref="userManagerService" />  
+	    <property name="hideUserNotFoundExceptions" value="false" />  
+	    <property name="passwordEncoder" ref="passwordEncoder"></property>  
+	</bean>
+  
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="basename" value="classpath:org/springframework/security/messages_zh_CN" />  
+    </bean>
+    
+     <!-- <bean id="localeResolver"  class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" /> -->
+
+
+      
+    <!-- 对密码进行MD5编码 -->  
+    <bean class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" id="passwordEncoder"/>  
+  
+    <!--   
+        通过 customUserDetailsService,Spring会自动的用户的访问级别.  
+        也可以理解成:以后我们和数据库操作就是通过customUserDetailsService来进行关联.  
+     -->  
+</beans>

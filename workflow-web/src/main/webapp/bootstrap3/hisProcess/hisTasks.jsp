@@ -52,75 +52,82 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${hisTasks.actHisActInstListVOs}" var="actdf"
-					varStatus="status">
-					<tr>
-						<td>
-							<c:choose>
-								<c:when test="${empty actdf.taskId}">
-									<input name="selectId" type="radio" value="" disabled="disabled"/>
-								</c:when>
-								<c:otherwise>
-									<input name="selectId" type="radio" value="${actdf.taskId}" />
-								</c:otherwise>
-							</c:choose>
-						</td> 
-						<td>
-							<c:choose>
-								<c:when test="${actdf.activityType=='userTask'}">
-									<button type="button" class="btn btn-default btn-sm" onclick="">
-				  						<span class="glyphicon glyphicon-user""></span>
-									</button>
-								</c:when>
-								<c:when test="${actdf.activityType=='startEvent'}">
-									<button type="button" class="btn btn-default btn-sm" onclick="">
-				  						<span class="glyphicon glyphicon-play-circle""></span>
-									</button>
-								</c:when>
-								<c:when test="${actdf.activityType=='endEvent'}">
-									<button type="button" class="btn btn-default btn-sm" onclick="">
-				  						<span class="glyphicon glyphicon-off""></span>
-									</button>
-								</c:when>
-								<c:when test="${actdf.activityType=='serviceTask'}">
-									<button type="button" class="btn btn-default btn-sm" onclick="">
-				  						<span class="glyphicon glyphicon-arrow-right""></span>
-									</button>
-								</c:when>
-								<c:when test="${actdf.activityType=='manualTask'}">
-									<button type="button" class="btn btn-default btn-sm" onclick="">
-				  						<span class="glyphicon glyphicon-forward""></span>
-									</button>
-								</c:when>
-								<c:when test="${actdf.activityType=='callActivity'}">
-									<button type="button" class="btn btn-default btn-sm" onclick="javascript:openSubProcess(${actdf.calledProcessInstanceId})">
-				  						<span class="glyphicon glyphicon-list-alt""></span>
-									</button>
-								</c:when>
-								<c:otherwise>
-									<button type="button" class="btn btn-default btn-sm" onclick="">
-				  						<span class="glyphicon glyphicon-user""></span>
-									</button>
-								</c:otherwise>
-							</c:choose>
-							
-						</td>
-						<td>${actdf.activityName}</td>
-						<td>
-							<c:choose>
-								<c:when test="${empty actdf.assignee}">
-									无
-								</c:when>
-								<c:otherwise>
-									${actdf.assignee}
-								</c:otherwise>
-							</c:choose>
-						</td>
-						<td><fmt:formatDate value="${actdf.startTime}" type="both"/></td>
-						<td><fmt:formatDate value="${actdf.endTime}" type="both"/></td>
-						<td>${actdf.opinion}</td>
-					</tr>
-				</c:forEach>
+				<c:choose>
+					<c:when test="${!empty hisTasks.actHisActInstListVOs}">
+						<c:forEach items="${hisTasks.actHisActInstListVOs}" var="actdf"
+							varStatus="status">
+							<tr>
+								<td>
+									<c:choose>
+										<c:when test="${empty actdf.taskId}">
+											<input name="selectId" type="radio" value="" disabled="disabled"/>
+										</c:when>
+										<c:otherwise>
+											<input name="selectId" type="radio" value="${actdf.taskId}" />
+										</c:otherwise>
+									</c:choose>
+								</td> 
+								<td>
+									<c:choose>
+										<c:when test="${actdf.activityType=='userTask'}">
+											<button type="button" class="btn btn-default btn-sm" onclick="">
+						  						<span class="glyphicon glyphicon-user""></span>
+											</button>
+										</c:when>
+										<c:when test="${actdf.activityType=='startEvent'}">
+											<button type="button" class="btn btn-default btn-sm" onclick="">
+						  						<span class="glyphicon glyphicon-play-circle""></span>
+											</button>
+										</c:when>
+										<c:when test="${actdf.activityType=='endEvent'}">
+											<button type="button" class="btn btn-default btn-sm" onclick="">
+						  						<span class="glyphicon glyphicon-off""></span>
+											</button>
+										</c:when>
+										<c:when test="${actdf.activityType=='serviceTask'}">
+											<button type="button" class="btn btn-default btn-sm" onclick="">
+						  						<span class="glyphicon glyphicon-arrow-right""></span>
+											</button>
+										</c:when>
+										<c:when test="${actdf.activityType=='manualTask'}">
+											<button type="button" class="btn btn-default btn-sm" onclick="">
+						  						<span class="glyphicon glyphicon-forward""></span>
+											</button>
+										</c:when>
+										<c:when test="${actdf.activityType=='callActivity'}">
+											<button type="button" class="btn btn-default btn-sm" onclick="javascript:openSubProcess(${actdf.calledProcessInstanceId})">
+						  						<span class="glyphicon glyphicon-list-alt""></span>
+											</button>
+										</c:when>
+										<c:otherwise>
+											<button type="button" class="btn btn-default btn-sm" onclick="">
+						  						<span class="glyphicon glyphicon-user""></span>
+											</button>
+										</c:otherwise>
+									</c:choose>
+									
+								</td>
+								<td>${actdf.activityName}</td>
+								<td>
+									<c:choose>
+										<c:when test="${empty actdf.assignee}">
+											无
+										</c:when>
+										<c:otherwise>
+											${actdf.assignee}
+										</c:otherwise>
+									</c:choose>
+								</td>
+								<td><fmt:formatDate value="${actdf.startTime}" type="both"/></td>
+								<td><fmt:formatDate value="${actdf.endTime}" type="both"/></td>
+								<td>${actdf.opinion}</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						
+					</c:otherwise>
+				</c:choose>
 			</tbody>
 		</table>
 	</div>

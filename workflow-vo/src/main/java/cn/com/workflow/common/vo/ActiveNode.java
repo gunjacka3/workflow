@@ -16,7 +16,7 @@ public class ActiveNode implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public ActiveNode(String _name,int _x,int _y,int _width,int _height)
+	public ActiveNode(String _name,double _x,double _y,double _width,double _height)
 	{
 		this.setX(_x);
 		this.setY(_y);
@@ -27,17 +27,17 @@ public class ActiveNode implements Serializable
 		
 	}
 	private boolean enableFlag;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	private double x;
+	private double y;
+	private double width;
+	private double height;
 	private List<ActiveNode> activeNodes;
 	private String id;
 	private String name;
-	private int parentX;
-	private int parentY;
-	private int parentW;
-	private int parentH;
+	private double parentX;
+	private double parentY;
+	private double parentW;
+	private double parentH;
 	private String parentId;
 	
 	
@@ -48,28 +48,28 @@ public class ActiveNode implements Serializable
 	public void setEnableFlag(boolean enableFlag) {
 		this.enableFlag = enableFlag;
 	}
-	public int getParentX() {
+	public double getParentX() {
 		return parentX;
 	}
-	public void setParentX(int parentX) {
+	public void setParentX(double parentX) {
 		this.parentX = parentX;
 	}
-	public int getParentY() {
+	public double getParentY() {
 		return parentY;
 	}
-	public void setParentY(int parentY) {
+	public void setParentY(double parentY) {
 		this.parentY = parentY;
 	}
-	public int getParentW() {
+	public double getParentW() {
 		return parentW;
 	}
-	public void setParentW(int parentW) {
+	public void setParentW(double parentW) {
 		this.parentW = parentW;
 	}
-	public int getParentH() {
+	public double getParentH() {
 		return parentH;
 	}
-	public void setParentH(int parentH) {
+	public void setParentH(double parentH) {
 		this.parentH = parentH;
 	}
 	public String getParentId() {
@@ -78,35 +78,35 @@ public class ActiveNode implements Serializable
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-	public int getX()
+	public double getX()
 	{
 		return x;
 	}
-	public void setX(int x)
+	public void setX(double x)
 	{
 		this.x = x;
 	}
-	public int getY()
+	public double getY()
 	{
 		return y;
 	}
-	public void setY(int y)
+	public void setY(double y)
 	{
 		this.y = y;
 	}
-	public int getWidth()
+	public double getWidth()
 	{
 		return width;
 	}
-	public void setWidth(int width)
+	public void setWidth(double width)
 	{
 		this.width = width;
 	}
-	public int getHeight()
+	public double getHeight()
 	{
 		return height;
 	}
-	public void setHeight(int height)
+	public void setHeight(double height)
 	{
 		this.height = height;
 	}

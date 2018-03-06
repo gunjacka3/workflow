@@ -262,8 +262,8 @@
 					<th><p class="text-primary">结束时间</p></th>
 					<th><p class="text-primary">处理时间 </p></th>
 					<th><p class="text-primary">发起用户 </p></th>
-					<th><p class="text-primary">已撤销</p></th>
-					<th><p class="text-primary">含子流程</p></th>
+					<th><p class="text-primary">结束或撤销</p></th>
+					<th><p class="text-primary">子流程</p></th>
 					<th><p class="text-primary">操作</p></th>
 				</tr>
 			</thead>
@@ -291,21 +291,21 @@
 						<td>${actdf.startUserId}</td>
 						<td>
 							<c:choose>
-								<c:when test="${empty actdf.deleteReason}">
+								<c:when test="${empty actdf.endTime}">
 									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 								</c:when>
 								<c:otherwise>
-									${actdf.deleteReason}
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 								</c:otherwise>
 							</c:choose>
 						</td>
 						<td>
 							<c:choose>
 								<c:when test="${empty actdf.superProcessInstanceId}">
-									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 								</c:when>
 								<c:otherwise>
-									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 								</c:otherwise>
 							</c:choose>
 						</td>

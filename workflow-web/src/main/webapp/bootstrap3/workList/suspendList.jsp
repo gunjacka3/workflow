@@ -37,10 +37,10 @@
 						function() {
 							$('a').click(function() {
 								var strs = $(this).attr('name').split(",");
-												if (strs[0] == "take") {
+												if (strs[0] == "resume") {
 													BootstrapDialog.confirm({
 											            title: '提示',
-											            message: '确认激活该任务吗?',
+											            message: '确认领取该任务吗?',
 											            type: BootstrapDialog.TYPE_INFO,
 											            closable: true, 
 											            draggable: true, 
@@ -50,7 +50,7 @@
 											            callback: function(result) {
 											            	if(result) {
 												            	$.ajax({
-																	url : "worklist/take/"+strs[1]+ ".do",
+																	url : "worklist/resumeTask/"+strs[1]+ ".do",
 																	data : strs[1],
 																	type : "POST",
 																	async : false,
@@ -66,7 +66,7 @@
 												                		        });
 												                			}
 											                			}else{
-												                			location.href = "worklist/initCandiWorkList.do";
+												                			location.href = "worklist/initSuspendList.do";
 											                			}
 											                		}
 																})
@@ -106,7 +106,7 @@
 								$('#clsButton').click(function(){
 									$('#customerName').val('');
 									$('#bizType').val('');
-									location.href = "worklist/initCandiWorkList.do";
+									location.href = "worklist/initSuspendList.do";
 								});
 						});
 
@@ -178,7 +178,7 @@
 						<td>${actcwl.processVariables.customerName}</td>
 						<td>
 							<div class="btn-group">
-								<a name="take,${actcwl.id}" title="签收"><i class="glyphicon glyphicon-ok"></i></a>
+								<a name="resume,${actcwl.id}" title="签收"><i class="glyphicon glyphicon-ok"></i></a>
 								<a name="pic,${actcwl.executionId},${actcwl.processDefinitionId}" title="流程图"><i class="glyphicon glyphicon-eye-open"></i></a>
 							</div>
 						</td>

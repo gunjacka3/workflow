@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/util 
+			http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<bean id="processEngineConfiguration" class="org.flowable.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="dataSource" />
+		<!-- Async history configuration -->
+		<property name="asyncHistoryEnabled" value="true" />
+		<property name="asyncHistoryExecutorNumberOfRetries" value="10" />
+		<property name="asyncHistoryExecutorActivate" value="true" />
+		<!-- 指定spring事务管理 -->
+		<property name="transactionManager" ref="txManager" />
+		<!-- 加载时判断activiti数据库版本 -->
+		<!-- <property name="databaseSchemaUpdate" value="create-drop" /> -->
+		<!-- jpa设置 -->
+		<!-- <property name="jpaEntityManagerFactory" ref="entityManagerFactory" 
+			/> -->
+		<property name="jpaHandleTransaction" value="true" />
+		<property name="jpaCloseEntityManager" value="true" />
+		<!-- <property name="JobExecutor" ref="springJobExecutor" /> -->
+		<!-- 限制模型缓存大小，默认为不限制  -->
+		<!-- <property name="processDefinitionCacheLimit" value="10" /> -->
+		<!-- Job executor activation -->
+		<property name="asyncExecutorActivate" value="true" />
+		<!-- 解决流程图中文乱码  -->
+		<property name="activityFontName" value="宋体" />
+		<property name="labelFontName" value="宋体" />
+		<!-- 
+		none: 不保存任何历史记录，可以提高系统性能；
+		activity：保存所有的流程实例、任务、活动信息；
+		audit：也是Activiti的默认级别，保存所有的流程实例、任务、活动、表单属性；
+		full： 最完整的历史记录，除了包含audit级别的信息之外还能保存详细，例如：流程变量。对于几种级别根据对功能的要求选择，如果需要日后跟踪详细可以开启full。
+		 -->
+		<!--  <property name="history" value="audit"> -->
+		<!-- 自定义主键生成机制 -->
+		<!-- 
+		<property name="idGenerator">
+    		<bean class="org.flowable.engine.impl.persistence.StrongUuidGenerator" />
+		</property>
+		 -->
+		<!-- xml转换定义编码格式 -->
+		<property name="xmlEncoding" value="UTF-8"/>
+		<!-- 使用spring的自动资源加载部署方式部署 -->
+		<!-- <property name="deploymentResources" value="classpath*:diagrams/*.*" /> -->
+		<!-- 是否使用历史数据表 -->
+		<!--<property name="isDbHistoryUsed " value="true" /> -->
+		<!-- 是否放弃身份模块 -->
+		<!-- 经测试影响TaskQuery.taskCandidateOrAssigned调用，详见Task.xml中sql注释 -->
+		<!-- <property name="dbIdentityUsed" value="false" /> -->
+		<!-- 限制流程节点中表达式使用bean，beans存在则限制activiti能够使用的bean，否则不受限制  -->
+		<property name="beans">
+			<map>
+				<entry key="mybean"  value-ref="actTestBean" />
+				<entry key="issuedDistributionTaskBean"  value-ref="issuedDistributionTaskBean" />
+				<entry key="sameUserTaskCheckBean"  value-ref="sameUserTaskCheckBean" />
+			</map>
+		</property>
+		<property name="eventListeners">
+			<list>
+				<bean class="cn.com.workflow.ext.event.GlobalEventListener" ></bean>	
+			</list>
+		</property>
+		<!-- 用于更改流程节点的执行行为 -->
+		<!--<property name="activityBehaviorFactory" ref="parallelGatewayActivityExtFactory"/>-->
+		<!-- 
+		<property name="customSessionFactories">
+			<list>
+				<bean class="cn.com.workflow.ext.identity.database.factory.CusActGroupEntityManagerFactory" ></bean>			
+				<bean class="cn.com.workflow.ext.identity.database.factory.CusActUserEntityManagerFactory" ></bean>	
+			</list>
+		</property>
+		 -->
+	</bean>
+	
+	<!-- 
+	<bean  id="springJobExecutor" class="org.activiti.spring.SpringJobExecutor">
+		<property name="taskExecutor" ref="taskExecutor" />
+	</bean> -->
+
+	<!-- 
+		<bean id="parallelGatewayActivityExtFactory" class="cn.com.workflow.ext.behavior.factory.ParallelGatewayActivityExtFactory">
+	 	 	<property name="parallelGatewayActivityBehaviorExt" ref="parallelGatewayActivityBehaviorExt"/>
+		</bean>
+	  
+		<bean id="parallelGatewayActivityBehaviorExt" class="cn.com.workflow.ext.behavior.ParallelGatewayActivityBehaviorExt2"/>
+	 -->
+
+<!-- 
+	<bean id="cusidGenerator"
+		class="cn.com.workflow.ext.idgenerator.CusIdGenerator">
+		<property name="redisService" ref="redisServiceImpl" />
+		<property name="key" value="jbpm.key" />
+		<property name="lockKey" value="jbpm.key.lockkey" />
+		<property name="idBlockSize" value="100" />
+		<property name="maxAttempts" value="3" />
+		<property name="expireMsecs" value="300" />
+		<property name="timeoutMsecs" value="300" />
+	</bean>
+	 -->
+	<bean id="processEngine" class="org.flowable.spring.ProcessEngineFactoryBean" >
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+	
+	<bean id="identityService" factory-bean="processEngine"
+		factory-method="getIdentityService" />
+	<bean id="formService" factory-bean="processEngine"
+		factory-method="getFormService" />
+	<bean id="repositoryService" factory-bean="processEngine"
+		factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine"
+		factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine"
+		factory-method="getTaskService" />
+	<bean id="historyService" factory-bean="processEngine"
+		factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine"
+		factory-method="getManagementService" />
+
+    <!-- 集成REST服务需要的bean -->
+    <bean id="restResponseFactory" class="org.activiti.rest.service.api.RestResponseFactory" />
+    <bean id="contentTypeResolver" class="org.activiti.rest.common.application.DefaultContentTypeResolver" />
+
+</beans>  

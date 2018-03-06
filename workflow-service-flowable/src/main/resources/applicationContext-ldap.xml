@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean  id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" value="ldap://localhost:389" />
+        <property name="base" value="dc=maxcrc,dc=com" />
+        <property name="userDn" value="cn=Manager,dc=maxcrc,dc=com" />
+        <property name="password" value="211513" />
+        <property name="referral" value="follow"></property>
+    </bean>
+    
+    <bean id="poolingContextSource" class="org.springframework.ldap.pool.factory.PoolingContextSource">  
+	    <property name="contextSource" ref="contextSource" />  
+	    <property name="dirContextValidator" ref="dirContextValidator" /> 
+	    <property name="maxActive" value="20" />  
+	    <property name="maxTotal" value="40" />  
+	    <property name="maxIdle" value="10" />  
+	    <property name="minIdle" value="5" />  
+	    <property name="maxWait" value="5" />  
+	    <property name="testOnBorrow" value="true" />  
+        <property name="testWhileIdle" value="true" />  
+	</bean>
+
+    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate" >
+        <property name="contextSource" ref="poolingContextSource" />
+    </bean>
+    
+    <bean id="dirContextValidator"  class="org.springframework.ldap.pool.validation.DefaultDirContextValidator" />
+    
+    <bean id="ldapSpringService" class="cn.com.workflow.ldap.LdapSpringService">
+        <property name="ldapTemplate">
+            <ref bean="ldapTemplate" />
+        </property>
+        <property name="userFilter" value="(objectClass=organizationalPerson)(cn=userId)" />
+        <property name="groupFilter" value="(objectClass=organizationalUnit)(ou=groupId)" />
+        <property name="ugFilter" value="(objectClass=organizationalPerson)(ou=groupId)" />
+        <property name="userFilterId" value="userId" />
+        <property name="groupFilterId" value="groupId" />
+    </bean>
+</beans>

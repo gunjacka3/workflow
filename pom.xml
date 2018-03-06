@@ -82,6 +82,7 @@
 		</plugins>
 	</build>
 	<modules>
+		<module>workflow-service-flowable</module>
 		<module>workflow-service</module>
 		<module>workflow-dao</module>
 		<module>workflow-vo</module>

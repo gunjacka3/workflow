@@ -651,12 +651,12 @@ public class ActTaskService implements cn.com.workflow.service.TaskService_ {
 	
 	public void readFakeActity(ActiveNode ann) throws BpmException{
 		List<ActiveNode> as=new ArrayList<ActiveNode>();
-		int x=ann.getX();
-		int y=ann.getY();
-		int width=ann.getWidth();
-		int hight=ann.getHeight();
+		double x=ann.getX();
+		double y=ann.getY();
+		double width=ann.getWidth();
+		double hight=ann.getHeight();
 		String _id=ann.getId();
-		int xxx,yyy,www,hhh;
+		double xxx,yyy,www,hhh;
 		xxx=x+width+5;
 		www=width+24;
 		if(y>55){
@@ -664,8 +664,8 @@ public class ActTaskService implements cn.com.workflow.service.TaskService_ {
 		}else{
 			yyy=0;
 		}
-		int xx=10;
-		int yy=10;
+		double xx=10;
+		double yy=10;
 		Random r1 = new Random();
 		int j=r1.nextInt(3)+3;
 		for(int i=0;i<=j;i++){
